@@ -1,0 +1,471 @@
+[
+    {
+        "name": "zendframework/zend-stdlib",
+        "version": "2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-stdlib.git",
+            "reference": "2acb22aaf926f5a1934c6622d596f0b14872c3cd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zendframework/zend-stdlib/2acb22aaf926f5a1934c6622d596f0b14872c3cd.zip",
+            "reference": "2acb22aaf926f5a1934c6622d596f0b14872c3cd",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master",
+            "zendframework/zend-eventmanager": "self.version",
+            "zendframework/zend-filter": "self.version",
+            "zendframework/zend-serializer": "self.version",
+            "zendframework/zend-servicemanager": "self.version"
+        },
+        "suggest": {
+            "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+            "zendframework/zend-filter": "To support naming strategy hydrator usage",
+            "zendframework/zend-serializer": "Zend\\Serializer component",
+            "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+        },
+        "time": "2015-02-10 14:55:30",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev",
+                "dev-develop": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Stdlib\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-stdlib",
+        "keywords": [
+            "stdlib",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-validator",
+        "version": "2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-validator.git",
+            "reference": "c8f46ae5503a3d09c55b2808a39cf9d3c967e1ee"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zendframework/zend-validator/c8f46ae5503a3d09c55b2808a39cf9d3c967e1ee.zip",
+            "reference": "c8f46ae5503a3d09c55b2808a39cf9d3c967e1ee",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23",
+            "zendframework/zend-stdlib": "self.version"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master",
+            "zendframework/zend-db": "self.version",
+            "zendframework/zend-filter": "self.version",
+            "zendframework/zend-i18n": "self.version",
+            "zendframework/zend-math": "self.version",
+            "zendframework/zend-servicemanager": "self.version",
+            "zendframework/zend-session": "self.version",
+            "zendframework/zend-uri": "self.version"
+        },
+        "suggest": {
+            "zendframework/zend-db": "Zend\\Db component",
+            "zendframework/zend-filter": "Zend\\Filter component, required by the Digits validator",
+            "zendframework/zend-i18n": "Zend\\I18n component to allow translation of validation error messages as well as to use the various Date validators",
+            "zendframework/zend-math": "Zend\\Math component",
+            "zendframework/zend-resources": "Translations of validator messages",
+            "zendframework/zend-servicemanager": "Zend\\ServiceManager component to allow using the ValidatorPluginManager and validator chains",
+            "zendframework/zend-session": "Zend\\Session component",
+            "zendframework/zend-uri": "Zend\\Uri component, required by the Uri and Sitemap\\Loc validators"
+        },
+        "time": "2015-03-12 13:58:47",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev",
+                "dev-develop": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Validator\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "provides a set of commonly needed validators",
+        "homepage": "https://github.com/zendframework/zend-validator",
+        "keywords": [
+            "validator",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-escaper",
+        "version": "2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-escaper.git",
+            "reference": "5f8b2723389d64e961afe2406a1a1d67cfe9bb6c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zendframework/zend-escaper/5f8b2723389d64e961afe2406a1a1d67cfe9bb6c.zip",
+            "reference": "5f8b2723389d64e961afe2406a1a1d67cfe9bb6c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2015-01-13 22:22:54",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev",
+                "dev-develop": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Escaper\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-escaper",
+        "keywords": [
+            "escaper",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-uri",
+        "version": "2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-uri.git",
+            "reference": "f4ae36c06b1425dc5c044f95b044f14454c76eb7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zendframework/zend-uri/f4ae36c06b1425dc5c044f95b044f14454c76eb7.zip",
+            "reference": "f4ae36c06b1425dc5c044f95b044f14454c76eb7",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23",
+            "zendframework/zend-escaper": "self.version",
+            "zendframework/zend-validator": "self.version"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2015-02-10 14:55:30",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev",
+                "dev-develop": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Uri\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "a component that aids in manipulating and validating » Uniform Resource Identifiers (URIs)",
+        "homepage": "https://github.com/zendframework/zend-uri",
+        "keywords": [
+            "uri",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-eventmanager",
+        "version": "2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-eventmanager.git",
+            "reference": "40ef4dc17a9a8f88b3339630c7293cf3214054a9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zendframework/zend-eventmanager/40ef4dc17a9a8f88b3339630c7293cf3214054a9.zip",
+            "reference": "40ef4dc17a9a8f88b3339630c7293cf3214054a9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23",
+            "zendframework/zend-stdlib": "self.version"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2015-01-13 22:22:54",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev",
+                "dev-develop": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\EventManager\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-event-manager",
+        "keywords": [
+            "eventmanager",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-code",
+        "version": "2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-code.git",
+            "reference": "6747e75d76ee18b41fef3ec355d03d0afd3954bc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zendframework/zend-code/6747e75d76ee18b41fef3ec355d03d0afd3954bc.zip",
+            "reference": "6747e75d76ee18b41fef3ec355d03d0afd3954bc",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23",
+            "zendframework/zend-eventmanager": "self.version"
+        },
+        "require-dev": {
+            "doctrine/common": ">=2.1",
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master",
+            "zendframework/zend-stdlib": "self.version"
+        },
+        "suggest": {
+            "doctrine/common": "Doctrine\\Common >=2.1 for annotation features",
+            "zendframework/zend-stdlib": "Zend\\Stdlib component"
+        },
+        "time": "2015-03-12 16:55:53",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev",
+                "dev-develop": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Code\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "provides facilities to generate arbitrary code using an object oriented interface",
+        "homepage": "https://github.com/zendframework/zend-code",
+        "keywords": [
+            "code",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-server",
+        "version": "2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-server.git",
+            "reference": "be28980328206f0bb4544f32e823c38b4178ca88"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zendframework/zend-server/be28980328206f0bb4544f32e823c38b4178ca88.zip",
+            "reference": "be28980328206f0bb4544f32e823c38b4178ca88",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23",
+            "zendframework/zend-code": "self.version",
+            "zendframework/zend-stdlib": "self.version"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2015-01-13 22:22:54",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev",
+                "dev-develop": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Server\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-server",
+        "keywords": [
+            "server",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-soap",
+        "version": "2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-soap.git",
+            "reference": "ad7316ca0d4206078145cc67989581ad92e30b27"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zendframework/zend-soap/ad7316ca0d4206078145cc67989581ad92e30b27.zip",
+            "reference": "ad7316ca0d4206078145cc67989581ad92e30b27",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23",
+            "zendframework/zend-server": "self.version",
+            "zendframework/zend-stdlib": "self.version",
+            "zendframework/zend-uri": "self.version"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master",
+            "zendframework/zend-http": "self.version"
+        },
+        "suggest": {
+            "zendframework/zend-http": "Zend\\Http component"
+        },
+        "time": "2015-01-13 22:22:54",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev",
+                "dev-develop": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Soap\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-soap",
+        "keywords": [
+            "soap",
+            "zf2"
+        ]
+    },
+    {
+        "name": "powerapi/powerapi-php",
+        "version": "3.0.2",
+        "version_normalized": "3.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/powerapi/powerapi-php.git",
+            "reference": "6ff3606358cdb46b94c539bea2985ac0aed7da1b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/powerapi/powerapi-php/6ff3606358cdb46b94c539bea2985ac0aed7da1b.zip",
+            "reference": "6ff3606358cdb46b94c539bea2985ac0aed7da1b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">= 5.1.2",
+            "zendframework/zend-soap": "~2.3.1"
+        },
+        "time": "2015-03-21 18:06:52",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PowerAPI\\": "lib/PowerAPI"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Henri Watson",
+                "email": "henri@henriwatson.com"
+            }
+        ],
+        "description": "PHP API for PowerSchool",
+        "homepage": "https://github.com/powerapi/PowerAPI-php",
+        "keywords": [
+            "powerschool"
+        ]
+    }
+]
