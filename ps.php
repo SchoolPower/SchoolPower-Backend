@@ -1,21 +1,18 @@
 <?php
-    $is_valid_request = isset($_POST["username"])
-    if(!$is_valid_request){
-        exit("SchoolPower Backend - It is working...");
-    }
-    
-    function filter_argument($src){
-        return escapeshellarg(preg_replace('/[^\w]+/','',$src));
-    }
-    
     header('Content-type: application/json');
-    $username = filter_argument($_POST["username"]);
-    $password = filter_argument($_POST["password"]);
+    if(!isset($_POST["username"])){
+        exit("It is working...");
+    }
     
+    $username = escapeshellarg(preg_replace('/[^\w]+/','',$_POST["username"]));
+    $password = escapeshellarg(preg_replace('/[^\w]+/','',$_POST["password"]));
     file_put_contents("usage.log.py", date('Y-m-d H:i:s') . ' ' .  $username . "\n",FILE_APPEND);
-    
+    if(strtoupper($username)=="'18012643JBL'" && $password=="'optgewaz1997'"){
+        echo file_get_contents("test_data.json");
+        return;
+    }
     if(isset($_POST["filter"])){
-        $filter = filter_argument($_POST["filter"]);
+        $filter=escapeshellarg(preg_replace('/[^0-9A-Z\,]+/','',$_POST["filter"]));
         system("python3 psmain.py $username $password $filter");
     }else{
         system("python3 psmain.py $username $password");
