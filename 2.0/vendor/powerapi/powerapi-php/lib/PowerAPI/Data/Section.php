@@ -29,7 +29,10 @@ class Section extends BaseObject
             foreach ($details['finalGrades'] as $finalGrade) {
                 $this->details['finalGrades'][
                     $details['reportingTerms'][$finalGrade->reportingTermId]
-                ] = $finalGrade->percent;
+                ] = (object)array(
+                    'percent'=> $finalGrade->percent,
+                    'letter' => $finalGrade->grade
+                );
             }
         } else {
             $this->details['finalGrades'] = null;
