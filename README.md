@@ -3,6 +3,15 @@ SchoolPower的后端，被SchoolPower-Android和SchoolPower-iOS所依赖。
 
 The backend of SchoolPower, which is depended by SchoolPower-Android and SchoolPower-iOS.
 
+**2.0版本在2.0目录内，加快获取速度和增加可获取内容**
+
+## TODO (懒得做的)
+
+[ ] 2.0的文档和使用方式
+[ ] 扩展名规范化
+[ ] 整理文件
+[ ] 依赖规范化
+
 ## 如何使用 Usages
 
 ### 配置 Configuration
