@@ -87,8 +87,8 @@ def get_subjects(session):
     return subjects
     
 try:
-    session=pslogin.login(sys.argv[1],sys.argv[2])
-except pslogin.WrongPasswordError:
+    session=login.login(sys.argv[1],sys.argv[2])
+except login.WrongPasswordError:
     print('{"error":1,"description":"Invalid username or password."}')
     exit(0)
 subjects=get_subjects(session)
