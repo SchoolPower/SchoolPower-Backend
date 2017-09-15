@@ -8,8 +8,11 @@ The backend of SchoolPower, which is depended by SchoolPower-Android and SchoolP
 ## TODO (懒得做的)
 
 [ ] 2.0的文档和使用方式
+
 [ ] 扩展名规范化
+
 [ ] 整理文件
+
 [ ] 依赖规范化
 
 ## 如何使用 Usages
