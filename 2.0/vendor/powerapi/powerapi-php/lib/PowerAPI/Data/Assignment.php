@@ -24,9 +24,15 @@ class Assignment extends BaseObject
         if ($details['score'] !== null) {
             $this->details['percent'] = $details['score']->percent;
             $this->details['score'] = $details['score']->score;
+            $this->details['letterGrade'] = $details['score']->letterGrade;
         } else {
             $this->details['percent'] = null;
             $this->details['score'] = null;
+            $this->details['letterGrade'] = null;
         }
+        $this->details['pointsPossible'] = $details["assignment"]->pointspossible;
+        $this->details["date"] = $details["assignment"]->dueDate;
+        $this->details["weight"] = $details["assignment"]->weight;
+        $this->details["includeInFinalGrade"] = $details["assignment"]->includeinfinalgrades;  
     }
 }
