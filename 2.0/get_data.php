@@ -14,4 +14,6 @@ try {
 }
 file_put_contents("../usage.log.py", '2.0 ' . date('Y-m-d H:i:s') . ' ' .  $username . "\n",FILE_APPEND);
 
+header('Content-type: application/json');
+
 echo json_encode($student);
