@@ -3,7 +3,9 @@ SchoolPower的后端，被SchoolPower-Android和SchoolPower-iOS所依赖。
 
 The backend of SchoolPower, which is depended by SchoolPower-Android and SchoolPower-iOS.
 
-**2.0版本在2.0目录内，加快获取速度和增加可获取内容**
+2.0版本API使用了修改版本的[powerapi/PowerAPI-php](https://github.com/powerapi/PowerAPI-php)
+
+**2.0版本在2.0目录内，加快获取速度和增加可获取内容，规范化结构化返回内容，优化文件大小**
 
 ## TODO (懒得做的)
 
@@ -14,6 +16,8 @@ The backend of SchoolPower, which is depended by SchoolPower-Android and SchoolP
 - [ ] 整理文件
 
 - [ ] 依赖规范化
+
+**以下是1.0版本的配置方法，现已失效**
 
 ## 如何使用 Usages
 
