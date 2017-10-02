@@ -6,7 +6,7 @@
     
     $username = escapeshellarg(preg_replace('/[^\w]+/','',$_POST["username"]));
     $password = escapeshellarg(preg_replace('/[^\w]+/','',$_POST["password"]));
-    file_put_contents("usage.log.py", date('Y-m-d H:i:s') . ' ' .  $username . "\n",FILE_APPEND);
+    file_put_contents("usage.log.py", '1.0 ' . date('Y-m-d H:i:s') . ' ' .  $username . "\n",FILE_APPEND);
     if(strtoupper($username)=="'18012643JBL'" && $password=="'optgewaz1997'"){
         echo file_get_contents("test_data.json");
         return;
