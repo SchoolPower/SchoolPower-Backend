@@ -1,14 +1,16 @@
 <?php
     if(!isset($_POST["device_token"])||!isset($_POST["username"])||!isset($_POST["password"])){
         header('HTTP/1.1 400 Bad Request');
+        exit();
     }
 
     function safe_argument($mysqli, $str) {
         return $mysqli->real_escape_string(preg_replace('/[^\w]+/','', $str));
     }
 
+    // CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , `username` TEXT NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
     // connect to the database
-    $mysqli = new mysqli("127.0.0.1", "root", "password", "schoolpower");
+    $mysqli = new mysqli("127.0.0.1", "root", "", "schoolpower");
 
     if ($mysqli->connect_errno) {
         header('HTTP/1.1 500 Internal Server Error');
@@ -20,11 +22,11 @@
     $password = safe_argument($mysqli, $_POST["password"]);
 
     if ($result = $mysqli->query("SELECT * FROM apns WHERE token = '$token'", MYSQLI_USE_RESULT)) {
-        $new_device = $mysqli->fetch_array($result) == null;
+        $new_device = $result->fetch_array() == null;
         $result->close();
-
+        
         if($new_device){
-            $mysqli->query("INSERT INTO apns(token, username, password) VALUES ($token, $username, $password)");                
+            $mysqli->query("INSERT INTO apns(token, username, password) VALUES ('$token', '$username', '$password')");                
         }else{
             $mysqli->query("UPDATE apns SET username='$username', password='$password' WHERE token='$token'");
         }

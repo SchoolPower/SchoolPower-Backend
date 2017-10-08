@@ -3,9 +3,23 @@ SchoolPower的后端，被SchoolPower-Android和SchoolPower-iOS所依赖。
 
 The backend of SchoolPower, which is depended by SchoolPower-Android and SchoolPower-iOS.
 
+**我知道这个README很乱，如果有人真的想要配置的话，欢迎 [联系我](mailto:harryyunull@gmail.com)**
+
+Welcome to [contact me](mailto:harryyunull@gmail.com) if you really want to use this!
+
 2.0版本API使用了修改版本的[powerapi/PowerAPI-php](https://github.com/powerapi/PowerAPI-php)
 
 **2.0版本在2.0目录内，加快获取速度和增加可获取内容，规范化结构化返回内容，优化文件大小**
+
+配置：
+
+```sql
+CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , `username` TEXT NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+```
+
+```bash
+easy_install apns2
+```
 
 ## TODO (懒得做的)
 
