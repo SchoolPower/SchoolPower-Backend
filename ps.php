@@ -1,5 +1,6 @@
 <?php
     header('Content-type: application/json');
+
     if(!isset($_POST["username"])){
         exit("It is working...");
     }
