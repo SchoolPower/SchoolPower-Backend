@@ -12,7 +12,6 @@
     h2 {margin: 2%;font-weight:bold;}
     body{margin: 5% 20%; font-family:"Consolas","Hack","Microsoft YaHei"}
     .charts div{margin:0 auto;}
-    #dataset_click{text-align:center;}
     </style>
 </head>
 
@@ -22,6 +21,12 @@
     <h1>SchoolPower Dashboard</h1>
 
     <br>
+    <div style="text-align:center;font-weight:bold;font-size:1.2em;">
+    <p>Today User: {{today_user|safe}}({{diff_user|safe}})</p>
+    <p>Today Usage: {{today_usage|safe}}({{diff_usage|safe}})</p>
+    </div>
+    
+    <br>
 
     <h2>Number</h2>
 {{number_chart|safe}}
@@ -30,12 +35,16 @@
     <h2>OS (Today)</h2>
 {{os_chart|safe}}
 
-    <h2>Versions (Today)</h2>
+    <h2>Versions</h2>
+{{version_chart|safe}}
 {{version_android_chart|safe}}
 {{version_ios_chart|safe}}
 
     <h2>Action (Today)</h2>
 {{action_chart|safe}}
+
+    <h2>District</h2>
+{{district_chart|safe}}
 </div>
 
 </body>
