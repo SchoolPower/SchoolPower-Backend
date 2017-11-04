@@ -25,13 +25,14 @@ class Section extends BaseObject
 
         if ($details['finalGrades'] !== null) {
             $this->details['finalGrades'] = Array();
-
             foreach ($details['finalGrades'] as $finalGrade) {
                 $this->details['finalGrades'][
-                    $details['reportingTerms'][$finalGrade->reportingTermId]
+                    $details['reportingTerms'][$finalGrade->reportingTermId]->abbr
                 ] = (object)array(
                     'percent'=> $finalGrade->percent,
-                    'letter' => $finalGrade->grade
+                    'letter' => $finalGrade->grade,
+                    'comment' => $finalGrade->commentValue,
+                    'eval' => isset($details['citizenGrades'][$finalGrade->reportingTermId]) ? $details['citizenGrades'][$finalGrade->reportingTermId]->codeName:"--"
                 );
             }
         } else {

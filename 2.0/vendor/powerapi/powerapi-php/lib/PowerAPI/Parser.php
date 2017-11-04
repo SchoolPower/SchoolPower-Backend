@@ -12,7 +12,7 @@ class Parser
      * @param array $assignmentScores array of assignment scores grouped by ID
      * @return array assignments grouped by section ID
     */
-    static public function assignments($rawAssignments, $assignmentCategories, $assignmentScores)
+    static public function assignments($rawAssignments, $assignmentCategories, $assignmentScores,$reportingTerms)
     {
         $assignments = Array();
 
@@ -20,11 +20,19 @@ class Parser
             if (!isset($assignments[$assignment->sectionid])) {
                 $assignments[$assignment->sectionid] = Array();
             }
-
+            $terms = Array();
+            foreach ($reportingTerms as $term){
+                $assignmentDate = strtotime($assignment->dueDate);
+                if($term->startDate<$assignmentDate && $term->endDate>$assignmentDate){
+                    $terms[]=$term->abbr;
+                }
+            }
+            
             $assignments[$assignment->sectionid][] = new Data\Assignment(Array(
                 'assignment' => $assignment,
                 'category' => $assignmentCategories[$assignment->categoryId],
-                'score' => Parser::requireDefined($assignmentScores[$assignment->id])
+                'score' => Parser::requireDefined($assignmentScores[$assignment->id]),
+                'terms' => array_values(array_unique($terms))
             ));
         }
 
@@ -90,9 +98,13 @@ class Parser
         $reportingTerms = Array();
 
         foreach ($rawReportingTerms as $reportingTerm) {
-            $reportingTerms[$reportingTerm->id] = $reportingTerm->abbreviation;
+            $reportingTerms[$reportingTerm->id] = (object)array(
+                "abbr" => $reportingTerm->abbreviation,
+                "startDate" => strtotime($reportingTerm->startDate),
+                "endDate" => strtotime($reportingTerm->endDate)
+            );
         }
-
+        
         return $reportingTerms;
     }
 
@@ -118,7 +130,7 @@ class Parser
      * @param array $teachers array of teachers grouped by teacher ID
      * @return array
      */
-    static public function sections($rawSections, $assignments, $finalGrades, $reportingTerms, $teachers)
+    static public function sections($rawSections, $assignments, $finalGrades, $reportingTerms, $teachers, $citizenGrades)
     {
         $sections = Array();
 
@@ -128,7 +140,8 @@ class Parser
                 'finalGrades' => Parser::requireDefined($finalGrades[$section->id]),
                 'reportingTerms' => $reportingTerms,
                 'section' => $section,
-                'teacher' => $teachers[$section->teacherID]
+                'teacher' => $teachers[$section->teacherID],
+                'citizenGrades' => $citizenGrades
             ));
         }
 
@@ -164,5 +177,48 @@ class Parser
         } else {
             return null;
         }
+    }
+    
+    static public function groupById($raw)
+    {
+        $items = Array();
+
+        foreach ($raw as $item) {
+            $items[$item->id] = $item;
+        }
+        return $items;
+    }
+    
+    static public function citizenGrades($rawCitizenGrades, $rawCitizenCodes)
+    {
+        $citizenCodes = Parser::groupById($rawCitizenCodes);
+        
+        $citizenGrades = Array();
+        foreach ($rawCitizenGrades as $citizenGrade) {
+            $citizenGrades[$citizenGrade->reportingTermId] = $citizenCodes[$citizenGrade->codeId];
+        }
+        return $citizenGrades;
+    }
+    
+    static public function attendances($rawAttendances, $attendanceCodes, $raw_sections)
+    {
+        $attendances = Array();
+
+        $sections=Array();
+        foreach ($raw_sections as $section){
+            $sections[$section->enrollments->id]=$section;
+        }
+        
+        foreach ($rawAttendances as $attendance) {
+            $attendances[] = array(
+                "code" => $attendanceCodes[$attendance->attCodeid]->attCode,
+                "description" => $attendanceCodes[$attendance->attCodeid]->description,
+                "date" => $attendance->attDate,
+                "period" => $sections[$attendance->ccid]->expression,
+                "name" => $sections[$attendance->ccid]->schoolCourseTitle
+            );
+        }
+        
+        return $attendances;
     }
 }

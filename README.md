@@ -18,7 +18,8 @@ CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` T
 ```
 
 ```bash
-easy_install apns2
+easy_install3 apns2
+pip3 install pymysql
 ```
 
 ## TODO (懒得做的)

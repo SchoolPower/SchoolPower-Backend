@@ -8,7 +8,7 @@
         return $mysqli->real_escape_string(preg_replace('/[^\w]+/','', $str));
     }
 
-    // CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , `username` TEXT NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+    // CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
     // connect to the database
     $mysqli = new mysqli("127.0.0.1", "root", "", "schoolpower");
 
@@ -18,17 +18,13 @@
     }
     
     $token = safe_argument($mysqli, $_POST["device_token"]);
-    $username = safe_argument($mysqli, $_POST["username"]);
-    $password = safe_argument($mysqli, $_POST["password"]);
 
     if ($result = $mysqli->query("SELECT * FROM apns WHERE token = '$token'", MYSQLI_USE_RESULT)) {
         $new_device = $result->fetch_array() == null;
         $result->close();
         
         if($new_device){
-            $mysqli->query("INSERT INTO apns(token, username, password) VALUES ('$token', '$username', '$password')");                
-        }else{
-            $mysqli->query("UPDATE apns SET username='$username', password='$password' WHERE token='$token'");
+            $mysqli->query("INSERT INTO apns(token) VALUES ('$token')");
         }
     }
 ?>

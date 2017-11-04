@@ -1,2 +1,3 @@
 *.cer
 *.pem
+config.py

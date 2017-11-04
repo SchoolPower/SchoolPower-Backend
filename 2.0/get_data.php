@@ -7,7 +7,7 @@ if(!isset($_POST["username"]))
 $username = preg_replace('/[^\w]+/','',$_POST["username"]);
 $password = preg_replace('/[^\w]+/','',$_POST["password"]);
 try {
-    $student = PowerAPI\PowerAPI::authenticate("http://powerschool.mapleleaf.cn", $username,$password);
+    $student = PowerAPI\PowerAPI::authenticate("http://101.132.86.211", $username,$password);
 } catch (PowerAPI\Exceptions\Authentication $e) {
     file_put_contents("../error.log.py", date('Y-m-d H:i:s') . ' ' .  $e->getMessage() . "\n",FILE_APPEND);
     exit('Something went wrong! '.$e->getMessage());

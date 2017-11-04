@@ -33,6 +33,7 @@ class Assignment extends BaseObject
         $this->details['pointsPossible'] = $details["assignment"]->pointspossible;
         $this->details["date"] = $details["assignment"]->dueDate;
         $this->details["weight"] = $details["assignment"]->weight;
-        $this->details["includeInFinalGrade"] = $details["assignment"]->includeinfinalgrades;  
+        $this->details["includeInFinalGrade"] = $details["assignment"]->includeinfinalgrades;
+        $this->details['terms'] = $details['terms'];
     }
 }

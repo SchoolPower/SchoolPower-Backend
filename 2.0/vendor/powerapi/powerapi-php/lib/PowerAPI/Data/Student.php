@@ -133,7 +133,7 @@ class Student extends BaseObject
     public function parseTranscript($transcript)
     {
         $studentData = $transcript->studentDataVOs;
-
+        
         $this->details['information'] = $studentData->student;
 
         $assignmentCategories = \PowerAPI\Parser::assignmentCategories($studentData->assignmentCategories);
@@ -141,11 +141,14 @@ class Student extends BaseObject
         $finalGrades = \PowerAPI\Parser::finalGrades($studentData->finalGrades);
         $reportingTerms = \PowerAPI\Parser::reportingTerms($studentData->reportingTerms);
         $teachers = \PowerAPI\Parser::teachers($studentData->teachers);
+        $citizenGrades = \PowerAPI\Parser::citizenGrades($studentData->citizenGrades, $studentData->citizenCodes);
+        $attendanceCodes = \PowerAPI\Parser::groupById($studentData->attendanceCodes);
 
         $assignments = \PowerAPI\Parser::assignments(
             $studentData->assignments,
             $assignmentCategories,
-            $assignmentScores
+            $assignmentScores,
+            $reportingTerms
         );
 
         $this->details['sections'] = \PowerAPI\Parser::sections(
@@ -153,7 +156,10 @@ class Student extends BaseObject
             $assignments,
             $finalGrades,
             $reportingTerms,
-            $teachers
+            $teachers,
+            $citizenGrades
         );
+        
+        $this->details['attendances'] = \PowerAPI\Parser::attendances($studentData->attendance, $attendanceCodes, $studentData->sections);
     }
 }
