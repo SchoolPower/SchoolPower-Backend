@@ -25,14 +25,14 @@ with open("/var/www/html/api/usage.log.py") as file:
         if len(parts) == 3:  # old version: 2017-09-24 10:00:00 'xxxxxxxx'
             api_version = "1.0"
             date = parts[0]
-            username = parts[2]
+            username = parts[2].replace("'", "").replace("\n", "")
             action = "unknown"
             version = "1.0.x"
             os = "unknown"
         elif len(parts) == 4:  # updated api: 1.0 2017-09-24 10:00:00 'xxxxxxxx'
             api_version = parts[0]
             date = parts[1]
-            username = parts[3].replace("'", "")
+            username = parts[3].replace("'", "").replace("\n", "")
             action = "unknown"
             version = "1.1_beta"
             os = "unknown"
@@ -57,6 +57,15 @@ Width, Height = 700, 500
 def index():
     today_date = datetime.datetime.now().strftime('%Y-%m-%d')
 
+    unique_data_today = (datatoaster.DataSet(all_data)
+                         .set_x(lambda i: i.username)
+                         .set_y(lambda li: li[-1])
+                         .add_constraint(lambda i: i.date == today_date)
+                         .get_result())
+    unique_data_today_array = []
+    for username, info in unique_data_today:
+        unique_data_today_array.append(Item(info['api_version'],info['date'],username,info['action'],info['version'],info['os']))
+
     number_chart_data = (datatoaster.DataSet(all_data)
                          .set_x(lambda i: i.date)
                          .set_y(lambda li: len(set([i.username for i in li])))
@@ -64,6 +73,7 @@ def index():
                          .get_result())
     number_chart = Line("User Numbers", width=Width, height=Height)
     number_chart.add("", list(number_chart_data.keys()), list(number_chart_data.values()), is_label_show=True)
+
     number_usage_chart_data = (datatoaster.DataSet(all_data)
                                .set_x(lambda i: i.date)
                                .set_y(lambda li: len(li))
@@ -82,7 +92,7 @@ def index():
     os_chart = Pie("Percentage of OS", width=Width, height=Height)
     os_chart.add("", list(os_chart_data.keys()), list(os_chart_data.values()), is_label_show=True)
 
-    version_ios_chart_data_set = datatoaster.DataSet(all_data)
+    version_ios_chart_data_set = datatoaster.DataSet(unique_data_today_array)
     version_ios_chart_data = (version_ios_chart_data_set
                               .set_x(lambda i: i.version)
                               .set_y(version_ios_chart_data_set.NumberOfAppearance(datatoaster.XValue))
@@ -92,7 +102,7 @@ def index():
     version_ios_chart.add("", list(version_ios_chart_data.keys()), list(version_ios_chart_data.values()),
                           is_label_show=True)
 
-    version_android_chart_data_set = datatoaster.DataSet(all_data)
+    version_android_chart_data_set = datatoaster.DataSet(unique_data_today_array)
     version_android_chart_data = (version_android_chart_data_set
                                   .set_x(lambda i: i.version)
                                   .set_y(version_android_chart_data_set.NumberOfAppearance(datatoaster.XValue))
@@ -102,7 +112,7 @@ def index():
     version_android_chart.add("", list(version_android_chart_data.keys()), list(version_android_chart_data.values()),
                               is_label_show=True)
 
-    action_chart_data_set = datatoaster.DataSet(all_data)
+    action_chart_data_set = datatoaster.DataSet(unique_data_today_array)
     action_chart_data = (action_chart_data_set
                          .set_x(lambda i: i.action)
                          .set_y(action_chart_data_set.NumberOfAppearance(datatoaster.XValue))
