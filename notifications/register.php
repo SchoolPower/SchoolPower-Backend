@@ -1,5 +1,5 @@
 <?php
-    if(!isset($_POST["device_token"])||!isset($_POST["username"])||!isset($_POST["password"])){
+    if(!isset($_POST["device_token"])){
         header('HTTP/1.1 400 Bad Request');
         exit();
     }

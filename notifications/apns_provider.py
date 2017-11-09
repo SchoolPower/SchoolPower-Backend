@@ -20,20 +20,20 @@ cursor = db.cursor()
 cursor.execute("SELECT * FROM apns")
 results = cursor.fetchall()
 invalid_list = []
-results = []
 for row in results:
-    token = row[1]
+    token = row #[1]
     try:
         client.send_notification(token, Payload(content_available=1), TOPIC)
         time.sleep(1)
     except BadDeviceToken:
+        print("bdt")
         invalid_list.append(token)
         
 for token in invalid_list:
     cursor.execute("DELETE FROM apns WHERE token = '%s'"%token)
-db.commit()
 
+db.commit()
 db.close()
 
-print("Notification Pushed. %d valid devices. %d devices are removed."%(len(results),len(invalid_list)))
+print("Notification Pushed. %d devices. %d devices are removed."%(len(results),len(invalid_list)))
 print("Time Used = %ds"%(time.time()-time_start))

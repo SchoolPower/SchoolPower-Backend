@@ -19,7 +19,7 @@ class Item:
 all_data = []
 
 # import data
-with open("../usage.log.py") as file:
+with open("/var/www/html/api/usage.log.py") as file:
     for line in file:
         parts = line.split(" ")
         if len(parts) == 3:  # old version: 2017-09-24 10:00:00 'xxxxxxxx'
@@ -102,7 +102,7 @@ def index():
                                                                0), today_usage - number_usage_chart_data.get(
         yesterday_date, 0)
 
-    os_chart_data_set = datatoaster.DataSet(all_data)
+    os_chart_data_set = datatoaster.DataSet(unique_data_array)
     os_chart_data = (os_chart_data_set
                      .set_x(lambda i: i.os)
                      .set_y(os_chart_data_set.NumberOfAppearance(datatoaster.XValue))
@@ -151,18 +151,29 @@ def index():
                          .set_y(action_chart_data_set.NumberOfAppearance(datatoaster.XValue))
                          .add_constraint(lambda i: i.date == today_date)
                          .get_result())
-    action_chart = Pie("Percentage of\nVersions (Android)", width=Width, height=Height)
+    action_chart = Pie("Percentage of\nActions", width=Width, height=Height)
     action_chart.add("", list(action_chart_data.keys()), list(action_chart_data.values()), is_label_show=True)
 
     district_chart_data_set = datatoaster.DataSet(unique_data_array)
     district_chart_data = (district_chart_data_set
-                           .set_x(lambda i: i.username[2:4] if len(i.username) == 8 else i.username[4:6])
+                           .set_x(lambda i: i.username[2:4] if i.username[:4]!="2017" else i.username[4:6])
                            .set_y(district_chart_data_set.NumberOfAppearance(datatoaster.XValue))
                            .add_constraint(
-        lambda i: (i.username[2:4] if len(i.username) == 8 else i.username[4:6]).isdigit())
+        lambda i: (i.username[2:4] if i.username[:4]!="2017" else i.username[4:6]).isdigit())
                            .get_result())
     district_chart = Pie("Percentage of\nDistrict Code", width=Width, height=Height)
     district_chart.add("", list(district_chart_data.keys()), list(district_chart_data.values()), is_label_show=True)
+
+    grade_chart_data_set = datatoaster.DataSet(unique_data_array)
+    grade_chart_data = (grade_chart_data_set
+                           .set_x(lambda i: i.username[0:2] if i.username[:4]!="2017" else i.username[0:4])
+                           .set_y(grade_chart_data_set.NumberOfAppearance(datatoaster.XValue))
+                           .add_constraint(
+        lambda i: (i.username[0:2] if i.username[:4]!="2017" else i.username[0:4]).isdigit())
+                           .get_result())
+    grade_chart = Pie("Percentage of\nGrades", width=Width, height=Height)
+    grade_chart.add("", list(grade_chart_data.keys()), list(grade_chart_data.values()), is_label_show=True)
+
 
     return render_template('index.html',
                            os_chart=os_chart.render_embed(),
@@ -172,6 +183,7 @@ def index():
                            number_usage_chart=number_usage_chart.render_embed(),
                            action_chart=action_chart.render_embed(),
                            district_chart=district_chart.render_embed(),
+                           grade_chart=grade_chart.render_embed(),
                            version_chart=version_chart.render_embed(),
                            today_user=today_user,
                            today_usage=today_usage,
