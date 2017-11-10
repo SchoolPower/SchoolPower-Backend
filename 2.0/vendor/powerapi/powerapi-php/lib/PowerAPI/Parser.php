@@ -208,17 +208,26 @@ class Parser
         foreach ($raw_sections as $section){
             $sections[$section->enrollments->id]=$section;
         }
-        
-        foreach ($rawAttendances as $attendance) {
-            $attendances[] = array(
-                "code" => $attendanceCodes[$attendance->attCodeid]->attCode,
-                "description" => $attendanceCodes[$attendance->attCodeid]->description,
-                "date" => $attendance->attDate,
-                "period" => $sections[$attendance->ccid]->expression,
-                "name" => $sections[$attendance->ccid]->schoolCourseTitle
-            );
-        }
-        
+        if(is_array($rawAttendances)){
+            foreach ($rawAttendances as $attendance) {
+                $attendances[] = array(
+                    "code" => $attendanceCodes[$attendance->attCodeid]->attCode,
+                    "description" => $attendanceCodes[$attendance->attCodeid]->description,
+                    "date" => $attendance->attDate,
+                    "period" => $sections[$attendance->ccid]->expression,
+                    "name" => $sections[$attendance->ccid]->schoolCourseTitle
+                );
+            }
+        }else{
+                $attendances[] = array(
+                    "code" => $attendanceCodes[$rawAttendances->attCodeid]->attCode,
+                    "description" => $attendanceCodes[$rawAttendances->attCodeid]->description,
+                    "date" => $rawAttendances->attDate,
+                    "period" => $sections[$rawAttendances->ccid]->expression,
+                    "name" => $sections[$rawAttendances->ccid]->schoolCourseTitle
+                );    
+            }
+        var_dump($attendances);
         return $attendances;
     }
 }
