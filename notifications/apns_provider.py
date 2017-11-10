@@ -1,6 +1,7 @@
 from apns2.client import APNsClient
 from apns2.payload import Payload
 from apns2.errors import BadDeviceToken
+from apns2.errors import Unregistered
 import pymysql
 import time
 import requests
@@ -9,7 +10,7 @@ import config
 TOPIC = 'studio.schoolpower.SchoolPower'
 PEM_FILE_PATH = 'apns.pem'
 
-client = APNsClient(PEM_FILE_PATH, use_sandbox=True, use_alternative_port=False)
+client = APNsClient(PEM_FILE_PATH, use_sandbox=False, use_alternative_port=False)
 
 time_start=time.time()
 
@@ -21,14 +22,14 @@ cursor.execute("SELECT * FROM apns")
 results = cursor.fetchall()
 invalid_list = []
 for row in results:
-    token = row #[1]
+    token = row[1]
     try:
         client.send_notification(token, Payload(content_available=1), TOPIC)
         time.sleep(1)
     except BadDeviceToken:
-        print("bdt")
         invalid_list.append(token)
-        
+    except Unregistered:
+        invalid_list.append(token)
 for token in invalid_list:
     cursor.execute("DELETE FROM apns WHERE token = '%s'"%token)
 

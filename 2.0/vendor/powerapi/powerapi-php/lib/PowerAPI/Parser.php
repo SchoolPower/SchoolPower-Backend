@@ -227,7 +227,6 @@ class Parser
                     "name" => $sections[$rawAttendances->ccid]->schoolCourseTitle
                 );    
             }
-        var_dump($attendances);
         return $attendances;
     }
 }
