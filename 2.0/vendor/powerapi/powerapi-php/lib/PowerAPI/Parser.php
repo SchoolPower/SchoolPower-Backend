@@ -208,6 +208,7 @@ class Parser
         foreach ($raw_sections as $section){
             $sections[$section->enrollments->id]=$section;
         }
+        if(empty((Array) $rawAttendances)) return $attendances;
         if(is_array($rawAttendances)){
             foreach ($rawAttendances as $attendance) {
                 $attendances[] = array(
