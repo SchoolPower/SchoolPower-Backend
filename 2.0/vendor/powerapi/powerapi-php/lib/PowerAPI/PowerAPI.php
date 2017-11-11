@@ -32,11 +32,10 @@ class PowerAPI
         ));
 
         $login = $client->__call(
-            'login',
+            'loginToPublicPortal',
             Array(
                 'username' => $username,
-                'password' => $password,
-                'userType' => 2
+                'password' => $password
             )
         );
 
@@ -46,7 +45,7 @@ class PowerAPI
         }
 
         $session = $login->userSessionVO;
-
+        
         return new Data\Student($url, $session, $fetch_transcript);
     }
 
