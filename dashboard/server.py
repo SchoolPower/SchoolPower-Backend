@@ -50,6 +50,7 @@ def import_data(file_name):
             else:
                 print("[Warning] Skipped a line: ", line)
                 continue
+            if action == "login(failed)":continue
             all_data.append(Item(api_version, date, time, username, action, version, os))
     return all_data
 
@@ -58,7 +59,7 @@ app = Flask(__name__)
 
 Width, Height, Curve = 700, 500, 0.5
 
-all_data = import_data("../usage.log.py")
+all_data = import_data("/var/www/html/api/usage.log.py")
 
 
 def standardized(data):
@@ -125,7 +126,7 @@ def index():
 
     nu_set = datatoaster.DataSet(all_data)
     number_usage_today_chart_data, nu_series = standardized(nu_set
-                                                            .set_x(lambda i: i.time[:5])
+                                                            .set_x(lambda i: i.time[:2]+":00")
                                                             .set_y(nu_set.NumberOfAppearance(lambda i: i.action))
                                                             .add_constraint(lambda i: i.date == today_date)
                                                             .ordered_by(lambda i: i[0])
@@ -145,10 +146,10 @@ def index():
                                                        .set_y(os_time_chart_data_set.NumberOfAppearance(lambda i: i.os))
                                                        .ordered_by(lambda i: i[0])
                                                        .get_result())
-    os_time_chart = Line("Versions", width=Width, height=Height)
+    os_time_chart = Line("", width=Width, height=Height)
     for i in range(0, len(next(iter(os_time_chart_data_set_data.values())))):
         os_time_chart.add(os_time_series[i], list(os_time_chart_data_set_data.keys()),
-                          [j[i] for j in list(os_time_chart_data_set_data.values())], **line_chart_args, is_stack=True)
+                          [j[i] for j in list(os_time_chart_data_set_data.values())], **line_chart_args)
 
     os_chart_data_set = datatoaster.DataSet(unique_data_array)
     os_chart_data = (os_chart_data_set
@@ -192,7 +193,7 @@ def index():
     district_chart_data = (district_chart_data_set
                            .set_x(lambda i: i.username[2:4] if i.username[:4] != "2017" else i.username[4:6])
                            .set_y(district_chart_data_set.NumberOfAppearance(datatoaster.XValue))
-                           .add_constraint(lambda i: i.username[:8].isdigit())
+                           .add_constraint(lambda i: i.username[:8].isdigit() and i.api_version!="1.0" and i.api_version!="unknown" and (i.username[0]=="1" or i.username[1]=="2") and len(i.username)>=8)
                            .get_result())
     district_chart = Pie("Percentage of\nDistrict Code", width=Width, height=Height)
     district_chart.add("", list(district_chart_data.keys()), list(district_chart_data.values()), is_label_show=True)
@@ -201,7 +202,7 @@ def index():
     grade_chart_data = (grade_chart_data_set
                         .set_x(lambda i: i.username[0:2] if i.username[:4] != "2017" else i.username[0:4])
                         .set_y(grade_chart_data_set.NumberOfAppearance(datatoaster.XValue))
-                        .add_constraint(lambda i: i.username[:8].isdigit())
+                        .add_constraint(lambda i: i.username[:8].isdigit() and i.api_version!="1.0" and i.api_version!="unknown" and (i.username[0]=="1" or i.username[0]=="2") and len(i.username)>=8)
                         .get_result())
     grade_chart = Pie("Percentage of\nGrades", width=Width, height=Height)
     grade_chart.add("", list(grade_chart_data.keys()), list(grade_chart_data.values()), is_label_show=True)
