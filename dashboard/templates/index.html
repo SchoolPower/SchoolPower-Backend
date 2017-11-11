@@ -4,9 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>SchoolPower Dashboard</title>
-	{% for jsfile_name in script_list %}
-    <script src="{{host}}/{{jsfile_name}}.js"></script>
-    {% endfor %}
+<script src="https://cdn.bootcss.com/echarts/3.7.2/echarts.min.js"></script>
     <style>
     h1 {margin: 5%;text-align:center;}
     h2 {margin: 2%;font-weight:bold;}
@@ -19,11 +17,13 @@
 
 <div class="charts">
     <h1>SchoolPower Dashboard</h1>
-
+    Time used to generate this page: {{time_used|safe}}ms ({{total_requests|safe}} requests)
     <br>
     <div style="text-align:center;font-weight:bold;font-size:1.2em;">
-    <p>Today User: {{today_user|safe}}({{diff_user|safe}})</p>
-    <p>Today Usage: {{today_usage|safe}}({{diff_usage|safe}})</p>
+    <p>Today User: {{today_user|safe}}({{diff_user|safe}}) Peak: {{user_peak|safe}} ({{user_peak_date|safe}})</p>
+    <p>Today Usage: {{today_usage|safe}}({{diff_usage|safe}}) Peak: {{usage_peak|safe}} ({{usage_peak_date|safe}})</p>
+    <p>Total User: {{total_users|safe}}</p>
+
     </div>
     
     <br>
@@ -31,12 +31,13 @@
     <h2>Number</h2>
 {{number_chart|safe}}
 {{number_usage_chart|safe}}
+{{number_today_chart|safe}}
 
     <h2>OS (Today)</h2>
 {{os_chart|safe}}
+{{os_time_chart|safe}}
 
     <h2>Versions</h2>
-{{version_chart|safe}}
 {{version_android_chart|safe}}
 {{version_ios_chart|safe}}
 
