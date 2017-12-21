@@ -205,7 +205,7 @@ class Parser
         $attendances = Array();
 
         $sections=Array();
-        foreach ($raw_sections as $section){
+            foreach ($raw_sections as $section){
             $sections[$section->enrollments->id]=$section;
         }
         $arr = (Array)$rawAttendances;
@@ -228,7 +228,7 @@ class Parser
             $description = $attendanceCodes[$rawAttendances->attCodeid]->description;
             if($description=="Present") $code = "P";
             else $code = $attendanceCodes[$rawAttendances->attCodeid]->attCode;
-            if($description==null || $code == null) continue;
+            if($description==null || $code == null) return $attendances;
             $attendances[] = array(
                 "code" => $code,
                 "description" => $description,

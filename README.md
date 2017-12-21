@@ -18,8 +18,22 @@ CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` T
 ```
 
 ```bash
+# Basic fucntion
+apt update && apt install software-properties-common
+add-apt-repository ppa:certbot/certbot
+apt update && apt install git python3-pip apache2 php libapache2-mod-php7.0 apt-get install php7.0-soap python-certbot-apache 
+git clone https://github.com/SchoolPower/SchoolPower-Backend.git
+vim /etc/apache2/ports.conf # change to the correct port
+vim /etc/apache2/sites-enabled/000-default.conf
+mkdir /var/www/html/api
+cp -r SchoolPower-Backend/2.0/ /var/www/html/api
+/etc/init.d/apache2 restart
+# ... more to be configurated (HTTPS).
+
+# For APN Push
 easy_install3 apns2
 pip3 install pymysql
+# ... more to be configurated (crontab, cert).
 ```
 
 ## TODO (懒得做的)

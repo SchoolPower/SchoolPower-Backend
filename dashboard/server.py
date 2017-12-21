@@ -19,9 +19,12 @@ class Item:
 
 # import data
 def import_data(file_name):
+    i = 0
     all_data = []
     with open(file_name) as file:
         for line in file:
+            i+=1
+            if i%1000 == 0:print("\r", i, end="")
             parts = line.split(" ")
             if len(parts) == 3:  # old version: 2017-09-24 10:00:00 'xxxxxxxx'
                 api_version = "1.0"
@@ -140,10 +143,19 @@ def index():
     user_peak, user_peak_date = get_peak(number_chart_data)
     usage_peak, usage_peak_date = get_peak(number_usage_chart_data)
 
+    def get_os(logs):
+        results={}
+        users=[]
+        for log in logs:
+            if log.username in users: continue
+            results[log.os]=results.get(log.os,0)+1
+            users.append(log.username)
+        return results
+
     os_time_chart_data_set = datatoaster.DataSet(unique_data_array)
     os_time_chart_data_set_data, os_time_series = standardized(os_time_chart_data_set
                                                        .set_x(lambda i: i.date)
-                                                       .set_y(os_time_chart_data_set.NumberOfAppearance(lambda i: i.os))
+                                                       .set_y(get_os)
                                                        .ordered_by(lambda i: i[0])
                                                        .get_result())
     os_time_chart = Line("", width=Width, height=Height)
