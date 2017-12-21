@@ -6,6 +6,7 @@ import pymysql
 import time
 import requests
 import config
+import datetime
 
 TOPIC = 'studio.schoolpower.SchoolPower'
 PEM_FILE_PATH = 'apns.pem'
@@ -19,7 +20,7 @@ db = pymysql.connect(config.SQL_SERVER_ADDRESS, config.SQL_SERVER_USER, config.S
 cursor = db.cursor()
 
 cursor.execute("SELECT * FROM apns")
-results = cursor.fetchall()
+results = list(set(cursor.fetchall()))
 invalid_list = []
 for row in results:
     token = row[1]
@@ -35,6 +36,7 @@ for token in invalid_list:
 
 db.commit()
 db.close()
-
-print("Notification Pushed. %d devices. %d devices are removed."%(len(results),len(invalid_list)))
-print("Time Used = %ds"%(time.time()-time_start))
+f = open("log","a")
+f.write(str(datetime.datetime.now()))
+f.write("\nNotification Pushed. %d devices. %d devices are removed.\n"%(len(results),len(invalid_list)))
+f.write("Time Used = %ds\n"%(time.time()-time_start))

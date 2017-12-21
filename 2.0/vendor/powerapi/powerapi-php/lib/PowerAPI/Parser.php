@@ -205,29 +205,38 @@ class Parser
         $attendances = Array();
 
         $sections=Array();
-        foreach ($raw_sections as $section){
+            foreach ($raw_sections as $section){
             $sections[$section->enrollments->id]=$section;
         }
-        if(empty((Array) $rawAttendances)) return $attendances;
+        $arr = (Array)$rawAttendances;
+        if(empty($arr)) return $attendances;
         if(is_array($rawAttendances)){
             foreach ($rawAttendances as $attendance) {
+                $description = $attendanceCodes[$attendance->attCodeid]->description;
+                if($description=="Present") $code = "P";
+                else $code = $attendanceCodes[$attendance->attCodeid]->attCode;
+                if($description==null || $code == null) continue;
                 $attendances[] = array(
-                    "code" => $attendanceCodes[$attendance->attCodeid]->attCode,
-                    "description" => $attendanceCodes[$attendance->attCodeid]->description,
+                    "code" => $code,
+                    "description" => $description,
                     "date" => $attendance->attDate,
                     "period" => $sections[$attendance->ccid]->expression,
                     "name" => $sections[$attendance->ccid]->schoolCourseTitle
                 );
             }
         }else{
-                $attendances[] = array(
-                    "code" => $attendanceCodes[$rawAttendances->attCodeid]->attCode,
-                    "description" => $attendanceCodes[$rawAttendances->attCodeid]->description,
-                    "date" => $rawAttendances->attDate,
-                    "period" => $sections[$rawAttendances->ccid]->expression,
-                    "name" => $sections[$rawAttendances->ccid]->schoolCourseTitle
-                );    
-            }
+            $description = $attendanceCodes[$rawAttendances->attCodeid]->description;
+            if($description=="Present") $code = "P";
+            else $code = $attendanceCodes[$rawAttendances->attCodeid]->attCode;
+            if($description==null || $code == null) return $attendances;
+            $attendances[] = array(
+                "code" => $code,
+                "description" => $description,
+                "date" => $rawAttendances->attDate,
+                "period" => $sections[$rawAttendances->ccid]->expression,
+                "name" => $sections[$rawAttendances->ccid]->schoolCourseTitle
+            );
+        }
         return $attendances;
     }
 }
