@@ -17,11 +17,12 @@ Welcome to [contact me](mailto:harryyunull@gmail.com) if you really want to use 
 CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , `username` TEXT NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ```
 
+Ubuntu:
 ```bash
 # Basic fucntion
-apt update && apt install software-properties-common
+apt update && apt install software-properties-common -y
 add-apt-repository ppa:certbot/certbot
-apt update && apt install git python3-pip apache2 php libapache2-mod-php7.0 apt-get install php7.0-soap python-certbot-apache 
+apt update && apt install git python3-pip apache2 php libapache2-mod-php7.0 php7.0-soap python-certbot-apache -y
 git clone https://github.com/SchoolPower/SchoolPower-Backend.git
 vim /etc/apache2/ports.conf # change to the correct port
 vim /etc/apache2/sites-enabled/000-default.conf
