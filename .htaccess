@@ -1,0 +1,12 @@
+<Files ~ "^.(htaccess|htpasswd)$">
+   deny from all
+</Files>
+<Files ~ "^.py$">
+   Order allow,deny
+   Deny from all
+</Files>
+<Files ~ "^.log$">
+   Order allow,deny
+   Deny from all
+</Files>
+order deny,allow
