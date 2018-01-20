@@ -139,6 +139,8 @@ class Student extends BaseObject
                 "title" => $studentData->schools->schoolDisabledTitle,
                 "message" => $studentData->schools->schoolDisabledMessage
             );
+            $this->details['sections'] = (object)array();
+            $this->details['attendances'] = (object)array();
             return;
         }
         
