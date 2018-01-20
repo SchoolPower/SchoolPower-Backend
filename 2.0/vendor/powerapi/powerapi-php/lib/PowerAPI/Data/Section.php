@@ -20,8 +20,9 @@ class Section extends BaseObject
     public function __construct($details)
     {
         $this->details['assignments'] = $details['assignments'];
-
         $this->details['expression'] = $details['section']->expression;
+        $this->details['startDate'] = $details['section']->enrollments->startDate;
+        $this->details['endDate'] = $details['section']->enrollments->endDate;
 
         if ($details['finalGrades'] !== null) {
             $this->details['finalGrades'] = Array();
