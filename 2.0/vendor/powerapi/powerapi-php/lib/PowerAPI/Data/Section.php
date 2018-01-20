@@ -32,7 +32,9 @@ class Section extends BaseObject
                     'percent'=> $finalGrade->percent,
                     'letter' => $finalGrade->grade,
                     'comment' => $finalGrade->commentValue,
-                    'eval' => isset($details['citizenGrades'][$finalGrade->reportingTermId]) ? $details['citizenGrades'][$finalGrade->reportingTermId]->codeName:"--"
+                    'eval' => isset($details['citizenGrades'][$finalGrade->reportingTermId]) ? $details['citizenGrades'][$finalGrade->reportingTermId]->codeName:"--",
+                    'startDate' => $details['reportingTerms'][$finalGrade->reportingTermId]->startDate,
+                    'endDate' => $details['reportingTerms'][$finalGrade->reportingTermId]->startDate
                 );
             }
         } else {
