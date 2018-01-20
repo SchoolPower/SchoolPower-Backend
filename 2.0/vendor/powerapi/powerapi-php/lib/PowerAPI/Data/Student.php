@@ -134,7 +134,14 @@ class Student extends BaseObject
     {
         $studentData = $transcript->studentDataVOs;
         $this->details['information'] = $studentData->student;
-
+        if($studentData->schools->schoolDisabled=="true"){
+            $this->details['disabled'] = (object)array(
+                "title" => $studentData->schools->schoolDisabledTitle,
+                "message" => $studentData->schools->schoolDisabledMessage
+            );
+            return;
+        }
+        
         $assignmentCategories = \PowerAPI\Parser::assignmentCategories($studentData->assignmentCategories);
         $assignmentScores = \PowerAPI\Parser::assignmentScores($studentData->assignmentScores);
         $finalGrades = \PowerAPI\Parser::finalGrades($studentData->finalGrades);
