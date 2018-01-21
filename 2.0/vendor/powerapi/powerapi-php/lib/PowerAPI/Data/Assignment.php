@@ -30,19 +30,13 @@ class Assignment extends BaseObject
                 "late" => $details["score"]->late == "true",
                 "missing" => $details["score"]->missing == "true",
                 "incomplete" => $details["score"]->incomplete == "true",
+                "collected" => $details["score"]->collected == "true",
                 "includeInFinalGrade" => $details["assignment"]->includeinfinalgrades == "1"
             );
         } else {
             $this->details['percent'] = null;
             $this->details['score'] = null;
             $this->details['letterGrade'] = null;
-            $this->details["status"] = (object) array(
-                "exempt" => null,
-                "late" => null,
-                "missing" => null,
-                "incomplete" => null,
-                "includeInFinalGrade" => $details["assignment"]->includeinfinalgrades == "1"
-            );
         }
         $this->details['pointsPossible'] = $details["assignment"]->pointspossible;
         $this->details["date"] = $details["assignment"]->dueDate;
