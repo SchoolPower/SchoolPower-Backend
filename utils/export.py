@@ -4,7 +4,7 @@ import xlsxwriter
 
 
 sections = json.load(open(sys.argv[1],encoding="utf-8"))["sections"]
-term = "T1"
+term = sys.argv[3]
 
 workbook = xlsxwriter.Workbook(sys.argv[2])
 bold = workbook.add_format({'bold': True})
@@ -12,6 +12,7 @@ bold = workbook.add_format({'bold': True})
 
 for section in sections:
     if section["finalGrades"] is None: continue
+    if not term in section["finalGrades"]: continue
     grade = float(section["finalGrades"][term]["percent"])
     if grade == 0.0: continue
     worksheet = workbook.add_worksheet(section["name"].replace(":","")[:31])
@@ -28,7 +29,7 @@ for section in sections:
     # lines
     for i in assignments:
         worksheet.write(cur_y-1, 0, i["name"])
-        worksheet.write(cur_y-1, 1, float(i["score"]) if i["score"]!="--" else "--")
+        worksheet.write(cur_y-1, 1, float(i["score"]) if i["score"]!="--" and i["score"]!=None else "--")
         worksheet.write(cur_y-1, 2, float(i["pointsPossible"]))
         worksheet.write(cur_y-1, 3, float(i["weight"]))
         worksheet.write(cur_y-1, 4, "=D%d*B%d"%(cur_y,cur_y))

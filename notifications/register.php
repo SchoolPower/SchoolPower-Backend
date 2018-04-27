@@ -7,15 +7,8 @@
     function safe_argument($mysqli, $str) {
         return $mysqli->real_escape_string(preg_replace('/[^\w]+/','', $str));
     }
-
-    // CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-    // connect to the database
-    $mysqli = new mysqli("127.0.0.1", "root", "", "schoolpower");
-
-    if ($mysqli->connect_errno) {
-        header('HTTP/1.1 500 Internal Server Error');
-        exit("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
-    }
+    
+    include("../common/db.php")
     
     $token = safe_argument($mysqli, $_POST["device_token"]);
 
@@ -27,4 +20,3 @@
             $mysqli->query("INSERT INTO apns(token) VALUES ('$token')");
         }
     }
-?>
