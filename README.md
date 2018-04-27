@@ -15,6 +15,7 @@ Welcome to [contact me](mailto:harryyunull@gmail.com) if you really want to use 
 
 ```sql
 CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , `username` TEXT NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `schoolpower`.`users` ( `id` INT NOT NULL AUTO_INCREMENT , `username` TEXT NOT NULL , `avatar` TEXT NOT NULL , `remove_code` TEXT NOT NULL , `grade` MEDIUMTEXT NOT NULL , PRIMARY KEY (`id`), UNIQUE `username` (`username`(16))) ENGINE = InnoDB;
 ```
 
 Ubuntu:
