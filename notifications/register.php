@@ -8,7 +8,7 @@
         return $mysqli->real_escape_string(preg_replace('/[^\w]+/','', $str));
     }
     
-    include("../common/db.php")
+    include("../common/db.php");
     
     $token = safe_argument($mysqli, $_POST["device_token"]);
 

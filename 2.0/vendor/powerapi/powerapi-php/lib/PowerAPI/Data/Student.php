@@ -169,6 +169,9 @@ class Student extends BaseObject
             $citizenGrades
         );
         
-        $this->details['attendances'] = \PowerAPI\Parser::attendances($studentData->attendance, $attendanceCodes, $studentData->sections);
+        if(isset($studentData->attendance))
+            $this->details['attendances'] = \PowerAPI\Parser::attendances($studentData->attendance, $attendanceCodes, $studentData->sections);
+        else
+            $this->details['attendances'] = Array()
     }
 }

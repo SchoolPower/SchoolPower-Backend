@@ -23,12 +23,12 @@ if(!isset($_POST['action'])){
 require_once '../common/db.php';
 
 $stmt = $mysqli->prepare("SELECT avatar FROM users WHERE username = ?");
-$stmt->bind_param("s", $username);
+$stmt->bind_param("s", strtolower($username));
 $stmt->execute();
 $res = $stmt->get_result();
 
 $studentData = $student->jsonSerialize();
-if($res->num_rows==0){
+if($res->num_rows!=0){
     $data = $res->fetch_all();
     $studentData["additional"] = Array("avatar" => $data[0][0]);
 }else{

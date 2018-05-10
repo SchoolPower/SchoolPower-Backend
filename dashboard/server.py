@@ -1,13 +1,12 @@
 from pyecharts import *
-from pyecharts.constants import DEFAULT_HOST
 from flask import Flask, render_template
 from datatoaster import *
 import collections
 import datetime
 import time
+import sys
 
 data = collections.OrderedDict()
-
 
 class Item:
     def __init__(self, api_version, date, time, username, action, version, os):
@@ -62,8 +61,7 @@ app = Flask(__name__)
 
 Width, Height, Curve = 700, 500, 0.5
 
-all_data = import_data("/var/www/html/api/usage.log.py")
-
+all_data = import_data(sys.argv[1])
 
 def standardized(data):
     all_keys = set()
@@ -241,7 +239,6 @@ def index():
                            today_usage=today_usage,
                            diff_user=("+" if diff_user > 0 else "") + str(diff_user),
                            diff_usage=("+" if diff_user > 0 else "") + str(diff_usage),
-                           host=DEFAULT_HOST,
                            script_list=os_chart.get_js_dependencies())
 
 

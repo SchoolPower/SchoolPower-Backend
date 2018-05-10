@@ -212,6 +212,7 @@ class Parser
         if(empty($arr)) return $attendances;
         if(is_array($rawAttendances)){
             foreach ($rawAttendances as $attendance) {
+                if(!isset($attendanceCodes[$attendance->attCodeid])) continue;
                 $description = $attendanceCodes[$attendance->attCodeid]->description;
                 if($description=="Present") $code = "P";
                 else $code = $attendanceCodes[$attendance->attCodeid]->attCode;
