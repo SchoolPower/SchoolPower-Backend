@@ -22,6 +22,10 @@ class ComposerStaticInit4bf61c48ea4911ea54a62a819793e799
         array (
             'PowerAPI\\' => 9,
         ),
+        'D' => 
+        array (
+            'Domnikl\\Statsd\\' => 15,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -60,6 +64,10 @@ class ComposerStaticInit4bf61c48ea4911ea54a62a819793e799
         'PowerAPI\\' => 
         array (
             0 => __DIR__ . '/..' . '/powerapi/powerapi-php/lib/PowerAPI',
+        ),
+        'Domnikl\\Statsd\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/domnikl/statsd/lib',
         ),
     );
 

@@ -3,22 +3,18 @@ SchoolPower的后端，被SchoolPower-Android和SchoolPower-iOS所依赖。
 
 The backend of SchoolPower, which is depended by SchoolPower-Android and SchoolPower-iOS.
 
-**我知道这个README很乱，如果有人真的想要配置的话，欢迎 [联系我](mailto:harryyunull@gmail.com)**
+使用了修改版本的[powerapi/PowerAPI-php](https://github.com/powerapi/PowerAPI-php)
 
-Welcome to [contact me](mailto:harryyunull@gmail.com) if you really want to use this!
-
-2.0版本API使用了修改版本的[powerapi/PowerAPI-php](https://github.com/powerapi/PowerAPI-php)
-
-**2.0版本在2.0目录内，加快获取速度和增加可获取内容，规范化结构化返回内容，优化文件大小**
-
-配置：
+# 配置 Configuration
 
 ```sql
 CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , `username` TEXT NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `schoolpower`.`users` ( `id` INT NOT NULL AUTO_INCREMENT , `username` TEXT NOT NULL , `avatar` TEXT NOT NULL , `remove_code` TEXT NOT NULL , `grade` MEDIUMTEXT NOT NULL , PRIMARY KEY (`id`), UNIQUE `username` (`username`(16))) ENGINE = InnoDB;
 ```
 
-Ubuntu:
+You will also need to run `composer install` under '2.0' folder to download dependencies.
+
+## Ubuntu
 ```bash
 # Basic fucntion
 apt update && apt install software-properties-common -y
@@ -38,52 +34,44 @@ pip3 install pymysql
 # ... more to be configurated (crontab, cert).
 ```
 
-## TODO (懒得做的)
+## Docker
 
-- [ ] 2.0的文档和使用方式
-
-- [ ] 扩展名规范化
-
-- [ ] 整理文件
-
-- [ ] 依赖规范化
-
-**以下是1.0版本的配置方法，现已失效**
-
-## 如何使用 Usages
-
-### 配置 Configuration
-
-修改``config.py``, 将HOST的值改为您学校的PowerSchool网址，通常类似于http://example.com/guardian/。
-
-修改``update.json``, 将url的值修改为APK的下载地址。
-
-您还需要修改Android/iOS配置文件里对应的常量改为您服务器的api网址。
-
-Edit ``config.py``, change the value of HOST to the URL of your school's PowerSchool platform. For example, http://example.com/guardian/ .
-
-Edit ``update.json``, change the value of url to the url of your apk file.
-
-You also need to change the constants in Android/iOS project to the corresponding urls.
-
-### 部署 Deployment
-
-### 直接部署 Deploy Directly
-
-将所有文件放到服务器的网站文件夹下(如``/var/www/html``)，然后修改apache2的配置文件(``apache2.conf``)，添加以下代码以禁用.py文件下载。
-
-```ap
-<Files ~ "\.py$">
-   Order allow,deny
-   Deny from all
-</Files>
+Database (MySQL):
 ```
-
-Put all files into your website directory(like ``/var/www/html``), and edit your configuration of apache2 (``apache2.conf``) to disable download of .py files.
-
-### Docker
-
-尚未完成，欢迎PR完善。
+docker run --name sp-mysql -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=schoolpower -p 3306:3306 -d mysql:5
+```
+PhpMyAdmin:
+```
+docker run --name myadmin -d --link sp-mysql:db -p 8123:80 phpmyadmin/phpmyadmin
+```
+Graphite:
+See [graphite-project/docker-graphite-statsd](https://github.com/graphite-project/docker-graphite-statsd).
+You need to expose 80, 2003, 8125 ports.
+Grafana: See [here](http://docs.grafana.org/installation/docker/)
+```
+docker run \
+  -d \
+  -p 3000:3000 \
+  --name=grafana \
+  -e "GF_INSTALL_PLUGINS=grafana-piechart-panel" \
+  grafana/grafana
+```
+SchoolPower:
+To build:
+```
+docker build\
+ --build-arg NAME=test\
+ --build-arg DOMAIN=api.schoolpower.tech\
+ --build-arg GRAPHITE_HOST=172.17.0.2\
+ --build-arg SQL_HOST=172.17.0.5\
+ --build-arg SQL_USERNAME=schoolpower\
+ --build-arg SQL_PASSWORD=secret\
+ -t sp .
+```
+To run:
+```
+docker run -v cert_place:/etc/letsencrypt/live/ -p 80:80 -p 443:443 sp
+```
 
 In progress. PR is welcomed.
 
