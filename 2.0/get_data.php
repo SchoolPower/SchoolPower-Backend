@@ -7,18 +7,23 @@ if(!isset($_POST["username"]))
 
 $username = preg_replace('/[^\w]+/','',$_POST["username"]);
 $password = preg_replace('/[^\w]+/','',$_POST["password"]);
+
+$connection = new \Domnikl\Statsd\Connection\UdpSocket('localhost', 8125);
+$statsd = new \Domnikl\Statsd\Client($connection, "api.v2");
+$statsd->setNamespace("api.v2");
+$statsd->increment("total_call");
+
 try {
+    $statsd->startTiming("fetch_data_time");
     $student = PowerAPI\PowerAPI::authenticate(POWERSCHOOL_URL, $username, $password);
+    $statsd->endTiming("fetch_data_time");
 } catch (PowerAPI\Exceptions\Authentication $e) {
+    $statsd->endTiming("fetch_data_time");
     file_put_contents("../error.log.py", date('Y-m-d H:i:s') . ' ' .  $e->getMessage() . "\n",FILE_APPEND);
     exit('Something went wrong! '.$e->getMessage());
+    $statsd->increment("failed_call");
 }
 header('Content-type: application/json');
-if(!isset($_POST['action'])){
-    file_put_contents("../usage.log.py", '2.0 ' . date('Y-m-d H:i:s') . ' ' .  $username .  "\n",FILE_APPEND);
-}else{
-    file_put_contents("../usage.log.py", "2.0 " . date('Y-m-d H:i:s') . " $username $_POST[version] $_POST[action] $_POST[os]\n",FILE_APPEND);
-}
 
 require_once '../common/db.php';
 
@@ -34,5 +39,11 @@ if($res->num_rows!=0){
 }else{
     $studentData["additional"] = Array("avatar" => "");
 }
+
+$statsd->set('user_usage', $username);
+$statsd->increment('version.' . $_POST['version']);
+$statsd->increment('action.' . $_POST['action']);
+$statsd->increment('os.' . $_POST['os']);
+$statsd->increment("successful_call");
 
 echo json_encode($studentData);

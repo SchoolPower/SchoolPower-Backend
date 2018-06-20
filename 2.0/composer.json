@@ -1,0 +1,12 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/harrynull/powerapi-php"
+        }
+    ],
+    "require": {
+        "powerapi/powerapi-php": "dev-master",
+        "domnikl/statsd": "~2.0"
+    }
+}

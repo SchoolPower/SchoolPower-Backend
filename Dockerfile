@@ -1,16 +1,65 @@
+# Arguments:
+# NAME: name of the container
+# DOMAIN: domain of the container
+# GRAPHITE_HOST: the ip of the graphite server
+# SQL_HOST: the ip of the mysql server
+# SQL_USERNAME: the username of the mysql server
+# SQL_PASSWORD: the password of the mysql server
+# Volumes:
+# /etc/letsencrypt/live/ : fullchain.pem/privkey.pem
+
 FROM php:7.0-apache
+MAINTAINER Harry Yu <harryyunull@gmail.com>
 
-COPY *.php *.py *.txt /var/www/html/api/
+# Install needed softwares
+RUN mkdir -p /usr/share/man/man1
 
-#RUN echo "deb http://mirrors.163.com/debian/ jessie main non-free contrib" >/etc/apt/sources.list && \
-#    echo "deb http://mirrors.163.com/debian/ jessie-proposed-updates main non-free contrib" >>/etc/apt/sources.list && \
-#    echo "deb-src http://mirrors.163.com/debian/ jessie main non-free contrib" >>/etc/apt/sources.list && \
-#    echo "deb-src http://mirrors.163.com/debian/ jessie-proposed-updates main non-free contrib" >>/etc/apt/sources.list
-#RUN apt-get update && apt-get install -y python3-pip && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN echo "deb http://ftp2.cn.debian.org/debian/ stretch main" > /etc/apt/sources.list && \
+    echo "deb http://ftp2.cn.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security/ stretch/updates main" >> /etc/apt/sources.list && \
+    apt-get update && apt-get upgrade -y && \
+    apt-get install -q -y collectd libxml2-dev software-properties-common && \
+    docker-php-ext-install soap && \ 
+    docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+RUN add-apt-repository ppa:certbot/certbot && \
+    apt-get install -q -y python-certbot-apache && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-#WORKDIR /var/www/html/
-#RUN pip3 install -r requirements.txt
+# Configuration
+ARG NAME
+ARG GRAPHITE_HOST
+ARG DOMAIN
+ARG SQL_HOST
+ARG SQL_USERNAME
+ARG SQL_PASSWORD
 
-#ADD apache2.conf /etc/apache2/apache2.conf
+COPY conf/schoolpower-api.conf /etc/apache2/sites-enabled/
+COPY conf/schoolpower-api-ssl.conf /etc/apache2/sites-enabled/
+RUN rm /etc/apache2/sites-enabled/000-default.conf &&\
+    sed -i "s/DOMAIN_PLACEHOLDER/${DOMAIN}/g" /etc/apache2/sites-enabled/schoolpower-api.conf &&\
+    sed -i "s/DOMAIN_PLACEHOLDER/${DOMAIN}/g" /etc/apache2/sites-enabled/schoolpower-api-ssl.conf
+RUN echo "ExtendedStatus on" >> /etc/apache2/apache2.conf &&\
+    echo "<Location /mod_status>" >> /etc/apache2/apache2.conf &&\
+    echo "  SetHandler server-status" >> /etc/apache2/apache2.conf &&\
+    echo "  Allow from localhost ip6-localhost" >> /etc/apache2/apache2.conf &&\
+    echo "</Location>" >> /etc/apache2/apache2.conf
+RUN a2enmod rewrite
+RUN a2enmod ssl
+VOLUME /etc/letsencrypt/live/
+RUN cp /usr/lib/python2.7/dist-packages/certbot_apache/options-ssl-apache.conf /etc/letsencrypt/
 
-EXPOSE 80
+# Configure collectd
+COPY conf/collectd.conf /etc/collectd/collectd.conf
+RUN sed -i "s/HOSTNAME_PLACEHOLDER/${NAME}/g" /etc/collectd/collectd.conf
+RUN sed -i "s/GRAPHITE_HOST_PLACEHOLDER/${GRAPHITE_HOST}/g" /etc/collectd/collectd.conf
+
+# Copy application
+COPY 2.0 /var/www/html/api/2.0/
+COPY common /var/www/html/api/common/
+RUN sed -i "s/127\.0\.0\.1/${SQL_HOST}/g" /var/www/html/api/common/db.php
+RUN sed -i "s/\"SQL_USERNAME\"\, \"root\"/\"SQL_USERNAME\", \"${SQL_USERNAME}\"/g" /var/www/html/api/common/db.php
+RUN sed -i "s/\"SQL_PASSWORD\"\, \"\"/\"SQL_PASSWORD\", \"${SQL_PASSWORD}\"/g" /var/www/html/api/common/db.php
+RUN sed -i "s/localhost/${GRAPHITE_HOST}/g" /var/www/html/api/2.0/get_data.php
+
+EXPOSE 80 443
+#ENTRYPOINT ["service", "apache2", "start"]

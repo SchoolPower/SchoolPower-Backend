@@ -15,4 +15,5 @@ return array(
     'Zend\\Escaper\\' => array($vendorDir . '/zendframework/zend-escaper/src'),
     'Zend\\Code\\' => array($vendorDir . '/zendframework/zend-code/src'),
     'PowerAPI\\' => array($vendorDir . '/powerapi/powerapi-php/lib/PowerAPI'),
+    'Domnikl\\Statsd\\' => array($vendorDir . '/domnikl/statsd/lib'),
 );
