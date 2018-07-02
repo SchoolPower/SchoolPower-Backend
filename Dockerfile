@@ -46,6 +46,7 @@ RUN echo "ExtendedStatus on" >> /etc/apache2/apache2.conf &&\
     echo "</Location>" >> /etc/apache2/apache2.conf
 RUN a2enmod rewrite
 RUN a2enmod ssl
+RUN a2enmod http2
 VOLUME /etc/letsencrypt/live/
 RUN cp /usr/lib/python2.7/dist-packages/certbot_apache/options-ssl-apache.conf /etc/letsencrypt/
 
@@ -53,9 +54,6 @@ RUN cp /usr/lib/python2.7/dist-packages/certbot_apache/options-ssl-apache.conf /
 COPY conf/collectd.conf /etc/collectd/collectd.conf
 RUN sed -i "s/HOSTNAME_PLACEHOLDER/${NAME}/g" /etc/collectd/collectd.conf
 RUN sed -i "s/GRAPHITE_HOST_PLACEHOLDER/${GRAPHITE_HOST}/g" /etc/collectd/collectd.conf
-
-# Configure supervisor
-
 
 # Copy application
 COPY 2.0 /var/www/html/api/2.0/
