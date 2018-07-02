@@ -9,8 +9,8 @@ $username = preg_replace('/[^\w]+/','',$_POST["username"]);
 $password = preg_replace('/[^\w]+/','',$_POST["password"]);
 
 $connection = new \Domnikl\Statsd\Connection\UdpSocket('localhost', 8125);
-$statsd = new \Domnikl\Statsd\Client($connection, "api.v2");
-$statsd->setNamespace("api.v2");
+$statsd = new \Domnikl\Statsd\Client($connection, "SERVERNAME.api.v2");
+$statsd->setNamespace("SERVERNAME.api.v2");
 $statsd->increment("total_call");
 
 try {
@@ -41,7 +41,7 @@ if($res->num_rows!=0){
 }
 
 $statsd->set('user_usage', $username);
-$statsd->increment('version.' . $_POST['version']);
+$statsd->increment('version.' . str_replace(".","_",$_POST['version']));
 $statsd->increment('action.' . $_POST['action']);
 $statsd->increment('os.' . $_POST['os']);
 $statsd->increment("successful_call");

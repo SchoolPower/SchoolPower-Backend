@@ -41,6 +41,7 @@ RUN rm /etc/apache2/sites-enabled/000-default.conf &&\
 RUN echo "ExtendedStatus on" >> /etc/apache2/apache2.conf &&\
     echo "<Location /mod_status>" >> /etc/apache2/apache2.conf &&\
     echo "  SetHandler server-status" >> /etc/apache2/apache2.conf &&\
+    echo "  Deny from all" >> /etc/apache2/apache2.conf &&\
     echo "  Allow from localhost ip6-localhost" >> /etc/apache2/apache2.conf &&\
     echo "</Location>" >> /etc/apache2/apache2.conf
 RUN a2enmod rewrite
@@ -59,7 +60,9 @@ COPY common /var/www/html/api/common/
 RUN sed -i "s/127\.0\.0\.1/${SQL_HOST}/g" /var/www/html/api/common/db.php
 RUN sed -i "s/\"SQL_USERNAME\"\, \"root\"/\"SQL_USERNAME\", \"${SQL_USERNAME}\"/g" /var/www/html/api/common/db.php
 RUN sed -i "s/\"SQL_PASSWORD\"\, \"\"/\"SQL_PASSWORD\", \"${SQL_PASSWORD}\"/g" /var/www/html/api/common/db.php
+RUN sed -i "s/SERVERNAME/${NAME}/g" /var/www/html/api/2.0/get_data.php
 RUN sed -i "s/localhost/${GRAPHITE_HOST}/g" /var/www/html/api/2.0/get_data.php
 
 EXPOSE 80 443
 #ENTRYPOINT ["service", "apache2", "start"]
+ENTRYPOINT ["service", "collectd", "start"]

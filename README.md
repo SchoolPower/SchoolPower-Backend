@@ -70,7 +70,7 @@ docker build\
 ```
 To run:
 ```
-docker run -v cert_place:/etc/letsencrypt/live/ -p 80:80 -p 443:443 sp
+docker run -v /etc/letsencrypt/live/:/etc/letsencrypt/live/ -p 80:80 -p 443:443 sp
 ```
 
 In progress. PR is welcomed.
