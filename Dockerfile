@@ -54,6 +54,9 @@ COPY conf/collectd.conf /etc/collectd/collectd.conf
 RUN sed -i "s/HOSTNAME_PLACEHOLDER/${NAME}/g" /etc/collectd/collectd.conf
 RUN sed -i "s/GRAPHITE_HOST_PLACEHOLDER/${GRAPHITE_HOST}/g" /etc/collectd/collectd.conf
 
+# Configure supervisor
+
+
 # Copy application
 COPY 2.0 /var/www/html/api/2.0/
 COPY common /var/www/html/api/common/
@@ -64,5 +67,4 @@ RUN sed -i "s/SERVERNAME/${NAME}/g" /var/www/html/api/2.0/get_data.php
 RUN sed -i "s/localhost/${GRAPHITE_HOST}/g" /var/www/html/api/2.0/get_data.php
 
 EXPOSE 80 443
-#ENTRYPOINT ["service", "apache2", "start"]
-ENTRYPOINT ["service", "collectd", "start"]
+CMD service collectd start && apache2-foreground
