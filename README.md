@@ -3,7 +3,7 @@ SchoolPower的后端，被SchoolPower-Android和SchoolPower-iOS所依赖。
 
 The backend of SchoolPower, which is depended by SchoolPower-Android and SchoolPower-iOS.
 
-使用了修改版本的[powerapi/PowerAPI-php](https://github.com/powerapi/PowerAPI-php)
+使用了修改版本的[powerapi/PowerAPI-php](https://github.com/powerapi/PowerAPI-php)。
 
 # 配置 Configuration
 
@@ -13,6 +13,51 @@ CREATE TABLE `schoolpower`.`users` ( `id` INT NOT NULL AUTO_INCREMENT , `usernam
 ```
 
 You will also need to run `composer install` under '2.0' folder to download dependencies.
+
+## Docker (Recommended)
+
+**Database (MySQL) Docker (Only need one instance):**
+```bash
+docker run --name sp-mysql -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=schoolpower -p 3306:3306 -d mysql:5
+```
+
+**PhpMyAdmin (Unnecessarily after setup):**
+```bash
+docker run --name myadmin -d --link sp-mysql:db -p 8123:80 phpmyadmin/phpmyadmin
+```
+Visit your phpmyadmin and run the above sql to configure the database. Remember to stop the container after you have everything configured.
+
+**Graphite (Only need one instance; Unneeded if you don't want statistics):**
+
+Please refer to [graphite-project/docker-graphite-statsd](https://github.com/graphite-project/docker-graphite-statsd). You need to expose 80, 2003, 8125 ports.
+
+**Grafana (Dashboard; Only need one instance; Unneeded if you don't want statistics):** See [here](http://docs.grafana.org/installation/docker/) for more information.
+```bash
+docker run \
+  -d \
+  -p 3000:3000 \
+  --name=grafana \
+  -e "GF_INSTALL_PLUGINS=grafana-piechart-panel" \
+  grafana/grafana
+```
+
+**SchoolPower (Finally! You can run multiple instances of this):**
+
+To build (Modify the parameters to fit your situation):
+```bash
+docker build\
+ --build-arg NAME=test\
+ --build-arg DOMAIN=api.schoolpower.tech\
+ --build-arg GRAPHITE_HOST=172.17.0.2\
+ --build-arg SQL_HOST=172.17.0.5\
+ --build-arg SQL_USERNAME=schoolpower\
+ --build-arg SQL_PASSWORD=secret\
+ -t schoolpower .
+```
+To run:
+```
+docker run -d -v /root/certs/:/etc/letsencrypt/live/ -p 80:80 -p 443:443 schoolpower
+```
 
 ## Ubuntu
 ```bash
@@ -34,47 +79,6 @@ pip3 install pymysql
 # ... more to be configurated (crontab, cert).
 ```
 
-## Docker
-
-Database (MySQL):
-```
-docker run --name sp-mysql -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=schoolpower -p 3306:3306 -d mysql:5
-```
-PhpMyAdmin:
-```
-docker run --name myadmin -d --link sp-mysql:db -p 8123:80 phpmyadmin/phpmyadmin
-```
-Graphite:
-See [graphite-project/docker-graphite-statsd](https://github.com/graphite-project/docker-graphite-statsd).
-You need to expose 80, 2003, 8125 ports.
-Grafana: See [here](http://docs.grafana.org/installation/docker/)
-```
-docker run \
-  -d \
-  -p 3000:3000 \
-  --name=grafana \
-  -e "GF_INSTALL_PLUGINS=grafana-piechart-panel" \
-  grafana/grafana
-```
-SchoolPower:
-To build:
-```
-docker build\
- --build-arg NAME=test\
- --build-arg DOMAIN=api.schoolpower.tech\
- --build-arg GRAPHITE_HOST=172.17.0.2\
- --build-arg SQL_HOST=172.17.0.5\
- --build-arg SQL_USERNAME=schoolpower\
- --build-arg SQL_PASSWORD=secret\
- -t sp .
-```
-To run:
-```
-docker run -v cert_place:/etc/letsencrypt/live/ -p 80:80 -p 443:443 sp
-```
-
-In progress. PR is welcomed.
-
 ## 常见问题 Common Questions
 
 1. 无法使用/报错 Crashes.
@@ -89,7 +93,7 @@ In progress. PR is welcomed.
 
    该程序的获取速度受限于您学校PowerSchool平台的速度，请将此程序运行在一个可以快速访问到您学校PowerSchool服务器的地区。
 
-   The speed of the program limits to your school's PowerSchool platform. Please deploy the program in a region that have fast access to your school's server.
+   The speed of the program limits to your school's PowerSchool platform. Please deploy the program in a region that can access your school's server fastly.
 
 
 
