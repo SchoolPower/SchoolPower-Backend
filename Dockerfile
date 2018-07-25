@@ -32,18 +32,29 @@ ARG DOMAIN
 ARG SQL_HOST
 ARG SQL_USERNAME
 ARG SQL_PASSWORD
+ARG HTTP_ONLY=false
 
+# First copy them all
+COPY conf/schoolpower-api-http.conf /etc/apache2/sites-enabled/
 COPY conf/schoolpower-api.conf /etc/apache2/sites-enabled/
 COPY conf/schoolpower-api-ssl.conf /etc/apache2/sites-enabled/
 RUN rm /etc/apache2/sites-enabled/000-default.conf &&\
     sed -i "s/DOMAIN_PLACEHOLDER/${DOMAIN}/g" /etc/apache2/sites-enabled/schoolpower-api.conf &&\
-    sed -i "s/DOMAIN_PLACEHOLDER/${DOMAIN}/g" /etc/apache2/sites-enabled/schoolpower-api-ssl.conf
+    sed -i "s/DOMAIN_PLACEHOLDER/${DOMAIN}/g" /etc/apache2/sites-enabled/schoolpower-api-ssl.conf &&\
+    sed -i "s/DOMAIN_PLACEHOLDER/${DOMAIN}/g" /etc/apache2/sites-enabled/schoolpower-api-http.conf
+    
+# Then adjust apache configuration according to "HTTP_ONLY"
+RUN if [ "${HTTP_ONLY}" = "true" ]; then rm /etc/apache2/sites-enabled/schoolpower-api.conf &&\
+    rm /etc/apache2/sites-enabled/schoolpower-api-ssl.conf;\
+    else rm /etc/apache2/sites-enabled/schoolpower-api-http.conf; fi
+    
 RUN echo "ExtendedStatus on" >> /etc/apache2/apache2.conf &&\
     echo "<Location /mod_status>" >> /etc/apache2/apache2.conf &&\
     echo "  SetHandler server-status" >> /etc/apache2/apache2.conf &&\
     echo "  Deny from all" >> /etc/apache2/apache2.conf &&\
     echo "  Allow from localhost ip6-localhost" >> /etc/apache2/apache2.conf &&\
     echo "</Location>" >> /etc/apache2/apache2.conf
+RUN echo "zlib.output_compression = 1" > php.ini # Enable compression
 RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN a2enmod http2
@@ -58,6 +69,7 @@ RUN sed -i "s/GRAPHITE_HOST_PLACEHOLDER/${GRAPHITE_HOST}/g" /etc/collectd/collec
 # Copy application
 COPY 2.0 /var/www/html/api/2.0/
 COPY common /var/www/html/api/common/
+COPY notifications /var/www/html/api/notifications/
 RUN sed -i "s/127\.0\.0\.1/${SQL_HOST}/g" /var/www/html/api/common/db.php
 RUN sed -i "s/\"SQL_USERNAME\"\, \"root\"/\"SQL_USERNAME\", \"${SQL_USERNAME}\"/g" /var/www/html/api/common/db.php
 RUN sed -i "s/\"SQL_PASSWORD\"\, \"\"/\"SQL_PASSWORD\", \"${SQL_PASSWORD}\"/g" /var/www/html/api/common/db.php
