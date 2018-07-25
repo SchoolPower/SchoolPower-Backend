@@ -2,8 +2,10 @@
 require_once 'vendor/autoload.php';
 require_once 'config.php';
 
-if(!isset($_POST["username"]))
-    exit("No username is given");
+header('Content-type: application/json');
+
+if(!isset($_POST["username"])||!isset($_POST["password"]))
+    exit('{"err":"100","description":"No username or password is given."}');
 
 $username = preg_replace('/[^\w]+/','',$_POST["username"]);
 $password = preg_replace('/[^\w]+/','',$_POST["password"]);
@@ -19,12 +21,11 @@ try {
     $statsd->endTiming("fetch_data_time");
 } catch (PowerAPI\Exceptions\Authentication $e) {
     $statsd->endTiming("fetch_data_time");
-    file_put_contents("../error.log.py", date('Y-m-d H:i:s') . ' ' .  $e->getMessage() . "\n",FILE_APPEND);
-    exit('Something went wrong! '.$e->getMessage());
     $statsd->increment("failed_call");
+    exit('{"err":"200","description":"'.addslashes($e->getMessage()).'","reserved":"Something went wrong!"}')
 }
-header('Content-type: application/json');
 
+// Get avatar from database; comment them out if you don't need it
 require_once '../common/db.php';
 
 $stmt = $mysqli->prepare("SELECT avatar FROM users WHERE username = ?");
@@ -40,6 +41,7 @@ if($res->num_rows!=0){
     $studentData["additional"] = Array("avatar" => "");
 }
 
+// Add some stats data
 $statsd->set('user_usage', $username);
 $statsd->increment('version.' . str_replace(".","_",$_POST['version']));
 $statsd->increment('action.' . $_POST['action']);
