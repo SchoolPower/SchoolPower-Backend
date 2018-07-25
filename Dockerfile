@@ -58,6 +58,8 @@ RUN echo "zlib.output_compression = 1" > php.ini # Enable compression
 RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN a2enmod http2
+RUN a2enmod proxy
+RUN a2enmod proxy_http
 VOLUME /etc/letsencrypt/live/
 RUN cp /usr/lib/python2.7/dist-packages/certbot_apache/options-ssl-apache.conf /etc/letsencrypt/
 
