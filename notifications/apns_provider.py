@@ -26,7 +26,7 @@ for row in results:
     token = row[1]
     try:
         client.send_notification(token, Payload(content_available=1), TOPIC)
-        time.sleep(0.2)
+        time.sleep(0.08)
     except BadDeviceToken:
         invalid_list.append(token)
     except Unregistered:
