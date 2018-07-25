@@ -1,2 +1,2 @@
 <?php
-define("POWERSCHOOL_URL", "http://101.132.86.211");
+define("POWERSCHOOL_URL", "https://powerschool.mapleleaf.cn");
