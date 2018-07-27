@@ -22,7 +22,7 @@ try {
 } catch (PowerAPI\Exceptions\Authentication $e) {
     $statsd->endTiming("fetch_data_time");
     $statsd->increment("failed_call");
-    exit('{"err":"200","description":"'.addslashes($e->getMessage()).'","reserved":"Something went wrong! Invalid Username or password"}')
+    exit('{"err":"200","description":"'.addslashes($e->getMessage()).'","reserved":"Something went wrong! Invalid Username or password"}');
 }
 
 // Get avatar from database; comment them out if you don't need it
