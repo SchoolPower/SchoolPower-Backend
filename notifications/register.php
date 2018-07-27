@@ -1,7 +1,7 @@
 <?php
     if(!isset($_POST["device_token"])){
         header('HTTP/1.1 400 Bad Request');
-        exit();
+        exit("device_token missing");
     }
 
     function safe_argument($mysqli, $str) {
