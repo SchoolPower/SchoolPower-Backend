@@ -73,6 +73,7 @@ COPY 2.0 /var/www/html/api/2.0/
 COPY common /var/www/html/api/common/
 COPY notifications /var/www/html/api/notifications/
 COPY dist/latest.php /var/www/html/dist/latest.php
+RUN echo "<?php echo file_get_contents('https://files.schoolpower.tech/update.json');" > /var/www/html/api/update.json.php
 RUN sed -i "s/127\.0\.0\.1/${SQL_HOST}/g" /var/www/html/api/common/db.php
 RUN sed -i "s/\"SQL_USERNAME\"\, \"root\"/\"SQL_USERNAME\", \"${SQL_USERNAME}\"/g" /var/www/html/api/common/db.php
 RUN sed -i "s/\"SQL_PASSWORD\"\, \"\"/\"SQL_PASSWORD\", \"${SQL_PASSWORD}\"/g" /var/www/html/api/common/db.php
