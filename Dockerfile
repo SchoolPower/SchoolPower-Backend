@@ -54,8 +54,9 @@ RUN echo "ExtendedStatus on" >> /etc/apache2/apache2.conf &&\
     echo "  Deny from all" >> /etc/apache2/apache2.conf &&\
     echo "  Allow from localhost ip6-localhost" >> /etc/apache2/apache2.conf &&\
     echo "</Location>" >> /etc/apache2/apache2.conf
-RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\ # Enable compression
-    echo "display_errors=Off" >> /usr/local/etc/php/php.ini # Disable warnings
+# Enable compression & Disable warnings
+RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
+    echo "display_errors=Off" >> /usr/local/etc/php/php.ini
 RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN a2enmod http2
