@@ -54,7 +54,8 @@ RUN echo "ExtendedStatus on" >> /etc/apache2/apache2.conf &&\
     echo "  Deny from all" >> /etc/apache2/apache2.conf &&\
     echo "  Allow from localhost ip6-localhost" >> /etc/apache2/apache2.conf &&\
     echo "</Location>" >> /etc/apache2/apache2.conf
-RUN echo "zlib.output_compression = 1" > php.ini # Enable compression
+RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\ # Enable compression
+    echo "display_errors=Off" >> /usr/local/etc/php/php.ini # Disable warnings
 RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN a2enmod http2
@@ -73,7 +74,7 @@ COPY 2.0 /var/www/html/api/2.0/
 COPY common /var/www/html/api/common/
 COPY notifications /var/www/html/api/notifications/
 COPY dist/latest.php /var/www/html/dist/latest.php
-RUN echo "<?php echo file_get_contents('https://files.schoolpower.tech/update.json');" > /var/www/html/api/update.json.php
+RUN echo "<?php header('Content-type: application/json'); echo file_get_contents('https://files.schoolpower.tech/update.json');" > /var/www/html/api/update.json.php
 RUN sed -i "s/127\.0\.0\.1/${SQL_HOST}/g" /var/www/html/api/common/db.php
 RUN sed -i "s/\"SQL_USERNAME\"\, \"root\"/\"SQL_USERNAME\", \"${SQL_USERNAME}\"/g" /var/www/html/api/common/db.php
 RUN sed -i "s/\"SQL_PASSWORD\"\, \"\"/\"SQL_PASSWORD\", \"${SQL_PASSWORD}\"/g" /var/www/html/api/common/db.php
