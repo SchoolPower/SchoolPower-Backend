@@ -50,7 +50,7 @@ if($res->num_rows!=0){
 
 // Add some stats data
 $statsd->set('user_usage', $username);
-$statsd->increment('version.' . str_replace(".","_",$_POST['version']));
+$statsd->increment('version.' . $_POST['os'] . '.' . str_replace(".","_",$_POST['version']));
 $statsd->increment('action.' . $_POST['action']);
 $statsd->increment('os.' . $_POST['os']);
 $statsd->increment("successful_call");
