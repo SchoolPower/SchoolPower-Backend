@@ -71,7 +71,7 @@ RUN sed -i "s/HOSTNAME_PLACEHOLDER/${NAME}/g" /etc/collectd/collectd.conf
 RUN sed -i "s/GRAPHITE_HOST_PLACEHOLDER/${GRAPHITE_HOST}/g" /etc/collectd/collectd.conf
 
 # Copy application
-COPY 2.0 /var/www/html/api/2.0/
+COPY src /var/www/html/api/2.0/
 COPY common /var/www/html/api/common/
 COPY notifications /var/www/html/api/notifications/
 COPY dist/latest.php /var/www/html/dist/latest.php
