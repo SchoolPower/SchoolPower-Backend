@@ -1,9 +1,9 @@
 <?php
 require_once 'vendor/autoload.php';
 require_once 'config.php';
-
 header('Content-type: application/json');
-
+header('Access-Control-Allow-Origin: *');
+ 
 if(!isset($_POST["username"])||!isset($_POST["password"]))
     exit('{"err":"100","description":"No username or password is given."}');
 
