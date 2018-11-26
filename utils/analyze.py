@@ -1,7 +1,8 @@
 import collections
+import sys
 data=collections.OrderedDict()
 all_data=[]
-with open("/var/www/html/api/usage.log.py") as file:
+with open(sys.argv[1]) as file:
     for line in file:
         parts=line.split(" ")
         if len(parts)==3: parts=["1.0"]+parts
