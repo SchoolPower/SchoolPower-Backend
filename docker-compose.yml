@@ -6,7 +6,7 @@ services:
         env_file: .env
         ports:
             - "9000:9000"
-        link:
+        links:
             - mysql
             - graphite
     test-nginx:
@@ -26,7 +26,7 @@ services:
         env_file: .env
         ports:
             - "3306:3306"
-        volume:
+        volumes:
             - sqldata:/var/lib/mysql
     graphite:
         image: graphiteapp/graphite-statsd
