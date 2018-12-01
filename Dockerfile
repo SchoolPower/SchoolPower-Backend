@@ -12,7 +12,8 @@ MAINTAINER Harry Yu <harryyunull@gmail.com>
 # Install needed softwares
 RUN mkdir -p /usr/share/man/man1
 
-RUN apk update && apk upgrade && apk add libxml2-dev && \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories &&\
+    apk update && apk upgrade && apk add libxml2-dev && \
     docker-php-ext-install soap && \ 
     docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
@@ -24,8 +25,7 @@ ENV SQL_USERNAME ""
 ENV SQL_PASSWORD ""
 
 # Enable compression & Disable warnings
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories &&\
-    echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
+RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
     echo "display_errors=Off" >> /usr/local/etc/php/php.ini
     
 # Copy application
