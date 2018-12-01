@@ -6,6 +6,9 @@ services:
         env_file: .env
         ports:
             - "9000:9000"
+        link:
+            - mysql
+            - graphite
     test-nginx:
         image: "nginx:latest"
         ports:
