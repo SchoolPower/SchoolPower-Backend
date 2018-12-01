@@ -24,16 +24,10 @@ services:
             - MYSQL_USER=schoolpower
             - MYSQL_PASSWORD=${SQL_PASSWORD}
         env_file: .env
-        ports:
-            - "3306:3306"
         volumes:
             - sqldata:/var/lib/mysql
     graphite:
         image: graphiteapp/graphite-statsd
-        ports:
-            - "2333:2333"
-            - "2003:2003"
-            - "8125:8125/udp"
         volumes:
             - graphite-conf:/opt/graphite/conf
             - graphite-data:/opt/graphite/storage
