@@ -47,9 +47,12 @@ services:
         links:
             - graphite
             - mysql
+        volumes:
+            - grafana-storage:/var/lib/grafana
 
 volumes:
   graphite-conf:
   graphite-data:
+  grafana-storage:
   sqldata:
   statsd:
