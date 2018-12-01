@@ -6,20 +6,15 @@
 # SQL_USERNAME: the username of the mysql server
 # SQL_PASSWORD: the password of the mysql server
 
-FROM php:7.0-fpm
+FROM php:7.2-fpm-alpine
 MAINTAINER Harry Yu <harryyunull@gmail.com>
 
 # Install needed softwares
 RUN mkdir -p /usr/share/man/man1
 
-RUN echo "deb http://ftp2.cn.debian.org/debian/ stretch main" > /etc/apt/sources.list && \
-    echo "deb http://ftp2.cn.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list && \
-    echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security/ stretch/updates main" >> /etc/apt/sources.list && \
-    apt-get update && apt-get upgrade -y && \
-    apt-get install -q -y libxml2-dev && \
+RUN apk update && apk upgrade && apk add libxml2-dev && \
     docker-php-ext-install soap && \ 
-    docker-php-ext-install mysqli && docker-php-ext-enable mysqli && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
 # Configuration
 ENV NAME ""
