@@ -1,0 +1,49 @@
+version: "3.3"
+
+services:
+    backend:
+        build: .
+        env_file: .env
+        ports:
+            - "9000:9000"
+    test-nginx:
+        image: "nginx:latest"
+        ports:
+            - "8080:80"
+        volumes:
+            - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
+        links:
+            - backend
+    mysql:
+        image: "mysql:5"
+        environment:
+            - MYSQL_DATABASE=schoolpower
+            - MYSQL_USER=schoolpower
+            - MYSQL_PASSWORD=${SQL_PASSWORD}
+        env_file: .env
+        ports:
+            - "3306:3306"
+        volume:
+            - sqldata:/var/lib/mysql
+    graphite:
+        image: graphiteapp/graphite-statsd
+        ports:
+            - "2333:2333"
+            - "2003:2003"
+            - "8125:8125/udp"
+        volumes:
+            - graphite-conf:/opt/graphite/conf
+            - graphite-data:/opt/graphite/storage
+            - statsd:/opt/statsd
+    grafana:
+        image: grafana/grafana
+        ports:
+            - "3000:3000"
+        environment:
+            - "GF_INSTALL_PLUGINS=grafana-piechart-panel"
+
+volumes:
+  graphite-conf:
+  graphite-data:
+  sqldata:
+  statsd:
