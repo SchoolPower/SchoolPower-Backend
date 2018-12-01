@@ -43,7 +43,12 @@ services:
             - mysql
         volumes:
             - grafana-storage:/var/lib/grafana
-
+    pma:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - "8081:80"
+        links:
+            - mysql:db
 volumes:
   graphite-conf:
   graphite-data:
