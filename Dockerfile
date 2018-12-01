@@ -24,7 +24,8 @@ ENV SQL_USERNAME ""
 ENV SQL_PASSWORD ""
 
 # Enable compression & Disable warnings
-RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories &&、
+    echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
     echo "display_errors=Off" >> /usr/local/etc/php/php.ini
     
 # Copy application
