@@ -20,7 +20,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
 # Configuration
 ENV NAME ""
 ENV GRAPHITE_HOST ""
-ENV GRAPHITE_HOST 8125
+ENV GRAPHITE_PORT 8125
 ENV SQL_HOST ""
 ENV SQL_USERNAME ""
 ENV SQL_PASSWORD ""
