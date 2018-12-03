@@ -17,7 +17,7 @@ if($username == "test2"){
     exit(file_get_contents('https://files.schoolpower.tech/test/test2.json'));
 }
 
-$HOST_NAME = getenv('NAME') + ".api.v2";
+$HOST_NAME = getenv('NAME') . ".api.v2";
 $connection = new \Domnikl\Statsd\Connection\UdpSocket(getenv('GRAPHITE_HOST'), getenv('GRAPHITE_PORT'));
 $statsd = new \Domnikl\Statsd\Client($connection, $HOST_NAME);
 $statsd->setNamespace($HOST_NAME);
