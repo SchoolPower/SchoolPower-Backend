@@ -23,16 +23,17 @@ cursor.execute("SELECT * FROM apns")
 results = list(set(cursor.fetchall()))
 invalid_list = []
 for row in results:
+    token_id = row[0]
     token = row[1]
     try:
         client.send_notification(token, Payload(content_available=1), TOPIC)
         time.sleep(0.08)
     except BadDeviceToken:
-        invalid_list.append(token)
+        invalid_list.append(token_id)
     except Unregistered:
-        invalid_list.append(token)
-for token in invalid_list:
-    cursor.execute("DELETE FROM apns WHERE token = '%s'"%token)
+        invalid_list.append(token_id)
+for token_id in invalid_list:
+    cursor.execute("DELETE FROM apns WHERE id = %d" % int(token_id))
 
 db.commit()
 db.close()
