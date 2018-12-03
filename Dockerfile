@@ -20,6 +20,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
 # Configuration
 ENV NAME ""
 ENV GRAPHITE_HOST ""
+ENV GRAPHITE_HOST 8125
 ENV SQL_HOST ""
 ENV SQL_USERNAME ""
 ENV SQL_PASSWORD ""
@@ -31,13 +32,8 @@ RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
 # Copy application
 COPY src /var/www/html/api/2.0/
 COPY common /var/www/html/api/common/
-COPY notifications /var/www/html/api/notifications/
+COPY notifications/register.php /var/www/html/api/notifications/register.php
 COPY dist/latest.php /var/www/html/dist/latest.php
 RUN echo "<?php header('Content-type: application/json'); echo file_get_contents('https://files.schoolpower.tech/update.json');" > /var/www/html/api/update.json.php
-RUN sed -i "s/127\.0\.0\.1/${SQL_HOST}/g" /var/www/html/api/common/db.php
-RUN sed -i "s/\"SQL_USERNAME\"\, \"root\"/\"SQL_USERNAME\", \"${SQL_USERNAME}\"/g" /var/www/html/api/common/db.php
-RUN sed -i "s/\"SQL_PASSWORD\"\, \"\"/\"SQL_PASSWORD\", \"${SQL_PASSWORD}\"/g" /var/www/html/api/common/db.php
-RUN sed -i "s/SERVERNAME/${NAME}/g" /var/www/html/api/2.0/get_data.php
-RUN sed -i "s/localhost/${GRAPHITE_HOST}/g" /var/www/html/api/2.0/get_data.php
 
 EXPOSE 9000

@@ -1,9 +1,9 @@
 <?php
     // CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
     // CREATE TABLE `schoolpower`.`users` ( `id` INT NOT NULL AUTO_INCREMENT , `username` TEXT NOT NULL , `avatar` TEXT NOT NULL , `remove_code` TEXT NOT NULL , `grade` MEDIUMTEXT NOT NULL , PRIMARY KEY (`id`), UNIQUE `username` (`username`(16))) ENGINE = InnoDB;
-    define("SQL_HOST", "127.0.0.1");
-    define("SQL_USERNAME", "root");
-    define("SQL_PASSWORD", "");
+    define("SQL_HOST", getenv("SQL_HOST"));
+    define("SQL_USERNAME", getenv("SQL_USERNAME"));
+    define("SQL_PASSWORD", getenv("SQL_PASSWORD"));
     define("SQL_DATABASE", "schoolpower");
 
     // connect to the database

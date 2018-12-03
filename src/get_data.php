@@ -7,8 +7,8 @@ header('Access-Control-Allow-Origin: *');
 if(!isset($_POST["username"])||!isset($_POST["password"]))
     exit('{"err":"100","description":"No username or password is given."}');
 
-$username = preg_replace('/[^\w]+/','',$_POST["username"]);
-$password = preg_replace('/[^\w]+/','',$_POST["password"]);
+$username = preg_replace('/[^\w]+/','', $_POST["username"]);
+$password = preg_replace('/[^\w]+/','', $_POST["password"]);
 
 if($username == "test"){
     exit(file_get_contents('https://files.schoolpower.tech/test/test.json'));
@@ -17,9 +17,10 @@ if($username == "test2"){
     exit(file_get_contents('https://files.schoolpower.tech/test/test2.json'));
 }
 
-$connection = new \Domnikl\Statsd\Connection\UdpSocket('localhost', 8125);
-$statsd = new \Domnikl\Statsd\Client($connection, "SERVERNAME.api.v2");
-$statsd->setNamespace("SERVERNAME.api.v2");
+$HOST_NAME = getenv('NAME') + ".api.v2";
+$connection = new \Domnikl\Statsd\Connection\UdpSocket(getenv('GRAPHITE_HOST'), getenv('GRAPHITE_PORT'));
+$statsd = new \Domnikl\Statsd\Client($connection, $HOST_NAME);
+$statsd->setNamespace($HOST_NAME);
 $statsd->increment("total_call");
 
 try {
