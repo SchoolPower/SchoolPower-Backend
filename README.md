@@ -7,17 +7,15 @@ The backend of SchoolPower, which is depended by SchoolPower-Android and SchoolP
 
 # 安装 Installation
 
-## docker-compose
-
-1. Setting up environment variables
+### 1. Setting up environment variables
 
 Copy `.env.template` to `.env` and change accordingly.
 
-2. Fetching dependencies
+### 2. Fetching dependencies
 
 Run `composer install` under '2.0' folder to download dependencies.
 
-3. Start up containers
+### 3. Start up containers
 
 To do this, you will need `docker` and `docker-compose` installed.
 
@@ -29,7 +27,7 @@ docker-compose up grafana # Grafana (Dashboard; Only need one instance; Unneeded
 docker-compose up backend # SchoolPower (Finally! You can run multiple instances of this)
 ```
 
-4. Configure database
+### 4. Configure database
 
 ```sql
 CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , `username` TEXT NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
@@ -41,7 +39,7 @@ Also, create a readonly account for grafana's use if needed.
 docker-compose down pma # Remember to stop the container after you have everything configured.
 ```
 
-5. Configure nginx
+### 5. Configure nginx
 
 Install nginx on your host, and configure accordingly.
 Below is a working example:
@@ -65,7 +63,7 @@ server {
 
 Be sure to use HTTPS for increased security!
 
-6. Configure APN Push
+### 6. Configure APN Push
 
 ```bash
 apt install python3 python3-pip
@@ -88,13 +86,29 @@ echo "0 6-23  * * *   root    cd /root/SchoolPower-Backend/notifications && pyth
 ```
 This will push notifications every hour from 6 a.m. to 23 p.m..
 
-7. Configure collectd (not necessary if you don't need it)
+### 7. Configure collectd (not necessary if you don't need it)
 
 ```bash
 sudo apt-get install collectd-core
 sudo apt-get install --no-install-recommends collectd
 vim /etc/collectd/collectd.conf # change the config accordingly.
 service collectd restart
+```
+
+Example of a working `write_graphite` configuration:
+```
+<Plugin write_graphite>
+        <Node "collectd">
+                Host "graphite"
+                Port "2003"
+                Protocol "tcp"
+                LogSendErrors true
+                Prefix "collectd."
+                StoreRates true
+                AlwaysAppendDS false
+                EscapeCharacter "_"
+        </Node>
+</Plugin>
 ```
 
 ## 常见问题 Common Questions
