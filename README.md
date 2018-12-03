@@ -35,6 +35,8 @@ docker-compose up backend # SchoolPower (Finally! You can run multiple instances
 CREATE TABLE `schoolpower`.`apns` ( `id` INT NOT NULL AUTO_INCREMENT , `token` TEXT NOT NULL , `username` TEXT NOT NULL , `password` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `schoolpower`.`users` ( `id` INT NOT NULL AUTO_INCREMENT , `username` TEXT NOT NULL , `avatar` TEXT NOT NULL , `remove_code` TEXT NOT NULL , `grade` MEDIUMTEXT NOT NULL , PRIMARY KEY (`id`), UNIQUE `username` (`username`(16))) ENGINE = InnoDB;
 ```
+Also, create a readonly account for grafana's use if needed.
+
 ```bash
 docker-compose down pma # Remember to stop the container after you have everything configured.
 ```
@@ -62,6 +64,29 @@ server {
 ```
 
 Be sure to use HTTPS for increased security!
+
+6. Configure APN Push
+
+```bash
+apt install python3 python3-pip
+python3 -m pip install apns2 pymysql
+```
+
+Put your APN private pem to `notifications/apns.pem`.
+
+Create `notifications/config.py` with the following content,
+```
+SQL_SERVER_ADDRESS = "YOU_SQL_SERVER_ADDRESS"
+SQL_SERVER_USER = "schoolpower"
+SQL_SERVER_PASSWORD = "YOU_SQL_SERVER_PASSWORD"
+SQL_SERVER_DATABASE = "schoolpower"
+```
+
+Lastly, configure the crontab by
+```bash
+echo "0 6-23  * * *   root    cd /root/SchoolPower-Backend/notifications && python3 apns_provider.py" >> /etc/crontab 
+```
+This will push notifications every hour from 6 a.m. to 23 p.m..
 
 ## 常见问题 Common Questions
 
