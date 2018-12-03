@@ -88,6 +88,15 @@ echo "0 6-23  * * *   root    cd /root/SchoolPower-Backend/notifications && pyth
 ```
 This will push notifications every hour from 6 a.m. to 23 p.m..
 
+7. Configure collectd (not necessary if you don't need it)
+
+```bash
+sudo apt-get install collectd-core
+sudo apt-get install --no-install-recommends collectd
+vim /etc/collectd/collectd.conf # change the config accordingly.
+service collectd restart
+```
+
 ## 常见问题 Common Questions
 
 1. 无法使用/报错 Crashes.

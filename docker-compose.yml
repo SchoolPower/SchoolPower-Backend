@@ -34,6 +34,8 @@ services:
             - graphite-conf:/opt/graphite/conf
             - graphite-data:/opt/graphite/storage
             - statsd:/opt/statsd
+        ports:
+            - "2003:2003"
     grafana:
         image: grafana/grafana
         ports:
