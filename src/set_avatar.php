@@ -9,8 +9,8 @@
         exit('{"success":"false", "error": "invalid request; check your parameters"}');
     }
     
-    $username = strtolower(preg_replace('/[^\w]+/','',$_POST["username"]));
-    $password = preg_replace('/[^\w]+/','',$_POST["password"]);
+    $username = strtolower($_POST["username"]);
+    $password = $_POST["password"];
     $avatar = $_POST["new_avatar"];
     $remove_code = $_POST["remove_code"];
     

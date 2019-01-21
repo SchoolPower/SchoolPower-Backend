@@ -7,8 +7,8 @@ header('Access-Control-Allow-Origin: *');
 if(!isset($_POST["username"])||!isset($_POST["password"]))
     exit('{"err":"100","description":"No username or password is given."}');
 
-$username = preg_replace('/[^\w]+/','', $_POST["username"]);
-$password = preg_replace('/[^\w]+/','', $_POST["password"]);
+$username = $_POST["username"];//preg_replace('/[^\w]+/','', $_POST["username"]);
+$password = $_POST["password"];//preg_replace('/[^\w]+/','', $_POST["password"]);
 
 if($username == "test"){
     exit(file_get_contents('https://files.schoolpower.tech/test/test.json'));
