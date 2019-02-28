@@ -5,7 +5,7 @@ header('Content-type: application/json');
 header('Access-Control-Allow-Origin: *');
  
 if(!isset($_POST["username"])||!isset($_POST["password"]))
-    exit('{"err":"100","description":"No username or password is given."}');
+    exit('{"err":"100","description":"No username or password is given.","instance":"'.getenv('NAME').'"}');
 
 $username = $_POST["username"];//preg_replace('/[^\w]+/','', $_POST["username"]);
 $password = $_POST["password"];//preg_replace('/[^\w]+/','', $_POST["password"]);
@@ -35,6 +35,7 @@ try {
     else
         exit('{"err":"201","description":"'.addslashes($e->getMessage()).'","reserved":""}');
 }
+$studentData = $student->jsonSerialize();
 
 // Get avatar from database; comment them out if you don't need it
 require_once '../common/db.php';
@@ -44,7 +45,6 @@ $stmt->bind_param("s", strtolower($username));
 $stmt->execute();
 $res = $stmt->get_result();
 
-$studentData = $student->jsonSerialize();
 if($res->num_rows!=0){
     $data = $res->fetch_all();
     $studentData["additional"] = Array("avatar" => $data[0][0]);
