@@ -32,6 +32,8 @@ try {
     $statsd->increment("failed_call");
     if($e->getMessage()=="Invalid Username or password")
         exit('{"err":"200","description":"'.addslashes($e->getMessage()).'","reserved":"Something went wrong! Invalid Username or password"}');
+    else if ($e->getMessage()=="ERROR_PASSWORD_ADMIN_RESET")
+        exit('{"err":"202","description":"ERROR_PASSWORD_ADMIN_RESET",alert:"You password is reset by admin. Please contact your school.","reserved":""}');
     else
         exit('{"err":"201","description":"'.addslashes($e->getMessage()).'","reserved":""}');
 }
