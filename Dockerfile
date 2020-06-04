@@ -30,10 +30,12 @@ RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
     echo "display_errors=Off" >> /usr/local/etc/php/php.ini
     
 # Copy application
+RUN mkdir /etc/conf.d/php.d/
 COPY src /var/www/html/api/2.0/
 COPY common /var/www/html/api/common/
 COPY notifications/register.php /var/www/html/api/notifications/register.php
 COPY dist/latest.php /var/www/html/dist/latest.php
+COPY conf/conf.yaml /etc/conf.d/php.d/conf.yaml
 RUN echo "<?php header('Content-type: application/json'); echo file_get_contents('https://files.schoolpower.tech/update.json');" > /var/www/html/api/update.json.php
 
 EXPOSE 9000
