@@ -1,0 +1,11 @@
+init_config:
+
+instances:
+
+## Log section
+logs:
+  - type: file
+    path: "../../src/application-json.log"
+    service: php
+    source: php
+    sourcecategory: sourcecode
