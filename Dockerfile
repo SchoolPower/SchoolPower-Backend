@@ -33,6 +33,5 @@ RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
 
 # Copy application
 RUN mkdir /etc/conf.d/php.d/
-RUN echo "<?php header('Content-type: application/json'); echo file_get_contents('https://files.schoolpower.tech/update.json');" > /var/www/html/api/update.json.php
 
 EXPOSE 9000
