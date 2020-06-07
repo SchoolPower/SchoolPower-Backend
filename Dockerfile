@@ -25,10 +25,12 @@ ENV SQL_HOST ""
 ENV SQL_USERNAME ""
 ENV SQL_PASSWORD ""
 
-# Enable compression & Disable warnings
+# Enable compression & Disable warnings & Write errors to docker logs
 RUN echo "zlib.output_compression = 1" > /usr/local/etc/php/php.ini &&\
-    echo "display_errors=Off" >> /usr/local/etc/php/php.ini
-    
+    echo "display_errors=Off" >> /usr/local/etc/php/php.ini &&\
+    echo "log_errors = On" >> /usr/local/etc/php/php.ini &&\
+    echo "error_log = /dev/stderr" >> /usr/local/etc/php/php.ini
+
 # Copy application
 RUN mkdir /etc/conf.d/php.d/
 COPY src /var/www/html/api/2.0/
