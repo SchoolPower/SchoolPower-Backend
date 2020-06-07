@@ -7,7 +7,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\JsonFormatter;
 
-$log = new Logger('channel_name');
+$log = new Logger('get_data.php');
 
 $formatter = new JsonFormatter();
 

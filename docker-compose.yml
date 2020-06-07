@@ -9,6 +9,22 @@ services:
         links:
             - mysql
             - graphite
+        volumes:
+            - ./src:/var/www/html/api/2.0/
+            - ./common:/var/www/html/api/common/
+            - ./notifications/register.php:/var/www/html/api/notifications/register.php
+            - ./dist/latest.php:/var/www/html/dist/latest.php
+    datadog:
+        build: datadog
+        links:
+         - backend
+        env_file: .env
+        environment:
+         - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+        volumes:
+         - /var/run/docker.sock:/var/run/docker.sock
+         - /proc/:/host/proc/:ro
+         - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
     test-nginx:
         image: "nginx:latest"
         ports:
