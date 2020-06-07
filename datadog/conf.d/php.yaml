@@ -5,7 +5,7 @@ instances:
 ## Log section
 logs:
   - type: file
-    path: "../../src/application-json.log"
+    path: "/logs/application-json.log"
     service: php
     source: php
     sourcecategory: sourcecode
