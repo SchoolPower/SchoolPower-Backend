@@ -52,6 +52,8 @@ services:
             - statsd:/opt/statsd
         ports:
             - "2003:2003"
+            - "8125:8125"
+            - "8125:8125/udp"
     grafana:
         image: grafana/grafana
         ports:
