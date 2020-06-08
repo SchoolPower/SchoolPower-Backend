@@ -72,7 +72,7 @@ services:
         ports:
             - "8081:80"
         depends_on:
-            - mysql:db
+            - mysql
 volumes:
   graphite-conf:
   graphite-data:
