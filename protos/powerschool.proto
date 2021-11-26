@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package model;
+
+message Grade {
+  double percentage = 1;
+  string letter = 2;
+}
+
+message Assignment {
+  string title = 1;
+  int64 date = 2;
+  Grade grade = 3;
+  string markForDisplay = 4;
+  string category = 6;
+  bool includeInFinalGrade = 7;
+  double weight = 8;
+  repeated string terms = 9;
+  map<string, bool> flags = 10;
+  string description = 11;
+  string comment = 12;
+}
+
+message TermGrade {
+  string term = 1;
+  Grade grade = 2;
+  string comment = 3;
+  string evaluation = 4;
+  string evaluationCode = 5;
+}
+
+message Course {
+  message Schedule {
+    int64 startTime = 1;
+    int64 endTime = 2;
+  }
+  string name = 1;
+  string instructor = 2;
+  string instructorEmail = 3;
+  string block = 4;
+  string room = 5;
+  repeated Assignment assignments = 6;
+  repeated TermGrade grades = 7;
+  int64 startDate = 8;
+  int64 endDate = 9;
+  repeated Schedule schedule = 10;
+}
+
+message Profile {
+  enum Gender {
+    MALE = 0;
+    FEMALE = 1;
+  }
+  double gpa = 1;
+  int32 id = 2;
+  Gender gender = 3;
+  int64 dob = 4;
+  string firstName = 5;
+  string middleName = 6;
+  string lastName = 7;
+}
+
+message DisabledInfo {
+  string title = 1;
+  string message = 2;
+}
+
+message ExtraInfo {
+  string avatarUrl = 1;
+  InformationCard informationCard = 2;
+  string jwt = 3;
+}
+
+message Attendance  {
+  string code = 1;
+  int64 date = 2;
+  string description = 3;
+  string courseName = 4;
+  string courseBlock = 5;
+  string comment = 6;
+}
+
+message InformationCard {
+  string identifier = 1;
+  string image = 2;
+  string title = 3;
+  string message = 4;
+  string primaryText = 5;
+  string primaryOnClickUrl = 6;
+}
+
+message StudentData {
+  Profile profile = 1;
+  repeated Attendance attendances = 2;
+  repeated Course courses = 3;
+  DisabledInfo disabledInfo = 4;
+  ExtraInfo extraInfo = 5;
+}

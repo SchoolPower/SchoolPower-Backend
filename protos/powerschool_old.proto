@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package model_old;
+
+message AssignmentOld {
+  string category = 1;
+  string description = 2;
+  string name = 3;
+  string percent = 4;
+  string score = 5;
+  string letterGrade = 6;
+  map<string, bool> status = 7;
+  string pointsPossible = 8;
+  string date = 9;
+  string weight = 10;
+  string includeInFinalGrade = 11;
+  repeated string terms = 12;
+}
+
+
+message SectionOld {
+  message FinalGrade {
+    string percent = 1;
+    string letter = 2;
+    string comment = 3;
+    string eval = 4;
+    int32 startDate = 5;
+    int32 endDate = 6;
+  }
+
+  message Teacher {
+    string firstName = 1;
+    string lastName = 2;
+    string email = 3;
+    string schoolPhone = 4;
+  }
+  repeated AssignmentOld assignments = 1;
+  string expression = 2;
+  string startDate = 3;
+  string endDate = 4;
+  map<string, FinalGrade> finalGrades = 5;
+  string name = 6;
+  string roomName = 7;
+  Teacher teacher = 8;
+}
+
+message InformationOld {
+  string currentGPA = 1;
+  string currentTerm = 2;
+  string dob = 3;
+  string id = 4;
+  string firstName = 5;
+  string middleName = 6;
+  string lastName = 7;
+  string gender = 8;
+  string photoDate = 9;
+}
+
+message AttendanceOld {
+  string code = 1;
+  string description = 2;
+  string date = 3;
+  string period = 4;
+  string name = 5;
+}
+
+message AdditionalOld {
+  string avatar = 1;
+}
+
+message StudentDataOld {
+  InformationOld information = 1;
+  repeated SectionOld sections = 2;
+  repeated AttendanceOld attendances = 3;
+  AdditionalOld additional = 4;
+}
