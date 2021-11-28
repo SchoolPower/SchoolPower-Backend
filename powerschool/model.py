@@ -86,6 +86,7 @@ class ExtraInfo(betterproto.Message):
     avatar_url: str = betterproto.string_field(1)
     information_card: "InformationCard" = betterproto.message_field(2)
     jwt: str = betterproto.string_field(3)
+    available_terms: List[str] = betterproto.string_field(4)
 
 
 @dataclass
@@ -101,11 +102,14 @@ class Attendance(betterproto.Message):
 @dataclass
 class InformationCard(betterproto.Message):
     identifier: str = betterproto.string_field(1)
-    image: str = betterproto.string_field(2)
-    title: str = betterproto.string_field(3)
-    message: str = betterproto.string_field(4)
+    title: str = betterproto.string_field(2)
+    message: str = betterproto.string_field(3)
+    image_url: str = betterproto.string_field(4)
     primary_text: str = betterproto.string_field(5)
     primary_on_click_url: str = betterproto.string_field(6)
+    title_background_color_hex: str = betterproto.string_field(7)
+    message_background_color_hex: str = betterproto.string_field(8)
+    is_active: bool = betterproto.bool_field(9)
 
 
 @dataclass

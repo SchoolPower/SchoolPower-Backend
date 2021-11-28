@@ -3,6 +3,16 @@ from typing import Any
 
 from .model import *
 
+LETTERS = ["F", "L", "E", "S"]
+
+
+def _term_order(term_title: str) -> int:
+    if len(term_title) != 2 or not term_title[1].isdigit():
+        return 0
+    index = int(term_title[1])
+    letter_value = (LETTERS.index(term_title[0]) + 1) if term_title[0] in LETTERS else len(LETTERS) + 1
+    return letter_value - index * 10
+
 
 def parse(student_data: Any) -> StudentData:
     assignments_categories = {cat.id: cat for cat in student_data.assignmentCategories}
@@ -34,7 +44,7 @@ def parse(student_data: Any) -> StudentData:
         full_mark = "{:.1f}".format(assignment.pointspossible)
         return f"{mark}/{full_mark}"
 
-    return StudentData(
+    parse_result = StudentData(
         profile=Profile(
             gpa=float(student_data.student.currentGPA) if student_data.student.currentGPA else None,
             id=student_data.student.id,
@@ -103,6 +113,13 @@ def parse(student_data: Any) -> StudentData:
         ),
         extra_info=ExtraInfo(),
     )
+
+    parse_result.extra_info.available_terms = sorted(
+        set(grade.term for course in parse_result.courses for grade in course.grades),
+        key=lambda term: _term_order(term)
+    )
+
+    return parse_result
 
 
 if __name__ == '__main__':

@@ -69,6 +69,7 @@ message ExtraInfo {
   string avatarUrl = 1;
   InformationCard informationCard = 2;
   string jwt = 3;
+  repeated string availableTerms = 4;
 }
 
 message Attendance  {
@@ -82,11 +83,14 @@ message Attendance  {
 
 message InformationCard {
   string identifier = 1;
-  string image = 2;
-  string title = 3;
-  string message = 4;
+  string title = 2;
+  string message = 3;
+  string imageUrl = 4;
   string primaryText = 5;
   string primaryOnClickUrl = 6;
+  string titleBackgroundColorHex = 7;
+  string messageBackgroundColorHex = 8;
+  bool isActive = 9;
 }
 
 message StudentData {
