@@ -50,7 +50,7 @@ async def old_api(request: Request) -> HTTPResponse:
     username = request.form['username'][0]
     password = request.form['password'][0]
 
-    if username == 'test':
+    if username == 'test' or (username == '19050069' and password == '19050069'):
         return text(httpx.get('https://schoolpower.oss-cn-shanghai.aliyuncs.com/test/test.json').text,
                     content_type="application/json")
 
@@ -109,6 +109,10 @@ async def get_data(request: Request) -> HTTPResponse:
     if username == 'test':
         mock = httpx.get('https://schoolpower.oss-cn-shanghai.aliyuncs.com/test/mock_data.json').text
         return text(mock.replace('%random%', str(random.randint(0, 1))), content_type="application/json")
+
+    if username == 'test2' or (username == '19050069' and password == '19050069'):
+        return text(httpx.get('https://schoolpower.oss-cn-shanghai.aliyuncs.com/test/test_v2_full.json').text,
+                    content_type="application/json")
 
     start_time = time.time()
     api = PowerSchoolApi(PS_API, CACHE_DB_LOCATION)
