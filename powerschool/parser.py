@@ -1,5 +1,6 @@
 import json
 from typing import Any
+import datetime
 
 from .model import *
 
@@ -120,6 +121,29 @@ def parse(student_data: Any) -> StudentData:
     )
 
     return parse_result
+
+
+def augment_test_data_with_schedule(raw: Any) -> StudentData:
+    """
+    Requires at least 5 different courses
+    """
+    mock = StudentData().from_json(raw)
+    now = datetime.datetime.now()
+    today = datetime.date.today()
+    from_monday = datetime.timedelta(days=today.weekday())
+    for day in range(5):
+        for course in range(5):
+            start = now - from_monday + datetime.timedelta(days=day) + datetime.timedelta(hours=course - 1)
+            end = start + datetime.timedelta(minutes=55)
+            if not hasattr(mock.courses[course], "schedule"):
+                mock.courses[course].schedule = []
+            mock.courses[course].schedule.append(
+                CourseSchedule(
+                    start_time=int(start.timestamp() * 1000),
+                    end_time=int(end.timestamp() * 1000)
+                )
+            )
+    return mock
 
 
 if __name__ == '__main__':

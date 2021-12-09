@@ -111,8 +111,9 @@ async def get_data(request: Request) -> HTTPResponse:
         return text(mock.replace('%random%', str(random.randint(0, 1))), content_type="application/json")
 
     if username == 'test2' or (username == '19050069' and password == '19050069'):
-        return text(httpx.get('https://schoolpower.oss-cn-shanghai.aliyuncs.com/test/test_v2_full.json').text,
-                    content_type="application/json")
+        mock = httpx.get('https://schoolpower.oss-cn-shanghai.aliyuncs.com/test/test_v2_full.json').text
+        augmented = parser.augment_test_data_with_schedule(mock)
+        return json(augmented.to_dict())
 
     start_time = time.time()
     api = PowerSchoolApi(PS_API, CACHE_DB_LOCATION)
