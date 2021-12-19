@@ -21,6 +21,7 @@ app = Sanic("SchoolPower")
 
 compress = Compress()
 db_inited = False
+powerschool_api = None
 
 
 async def get_student_data(api: PowerSchoolApi, username: str, password: str, parse_func):
@@ -37,6 +38,20 @@ def db_operation(func):
         return await func(request)
 
     return wrapper
+
+
+async def get_powerschool_api():
+    global powerschool_api
+
+    if powerschool_api is not None:
+        return powerschool_api
+    try:
+        powerschool_api = await asyncio.get_event_loop().run_in_executor(
+            None, PowerSchoolApi, PS_API, CACHE_DB_LOCATION
+        )
+    except ConnectTimeout:
+        print("Failed to establish connection to PowerSchool Api")
+        raise
 
 
 @app.get('/')
@@ -56,9 +71,8 @@ async def old_api(request: Request) -> HTTPResponse:
                     content_type="application/json")
 
     start_time = time.time()
-    api = None
     try:
-        api = PowerSchoolApi(PS_API, CACHE_DB_LOCATION)
+        api = await get_powerschool_api()
         parsed_data, avatar = await asyncio.gather(
             get_student_data(api, username, password, parser_old.parse_old_api),
             db.get_user_avatar(username)
@@ -102,8 +116,6 @@ async def old_api(request: Request) -> HTTPResponse:
             "duration": time.time() - start_time,
             "api_version": 2,
         })
-        if api is not None:
-            await api.close()
 
     return json(parsed_data.to_dict(include_default_values=True))
 
@@ -125,9 +137,8 @@ async def get_data(request: Request) -> HTTPResponse:
         return json(augmented.to_dict())
 
     start_time = time.time()
-    api = None
     try:
-        api = PowerSchoolApi(PS_API, CACHE_DB_LOCATION)
+        api = await get_powerschool_api()
         parsed_data, avatar = await asyncio.gather(
             get_student_data(api, username, password, parser.parse),
             db.get_user_avatar(username)
@@ -160,8 +171,6 @@ async def get_data(request: Request) -> HTTPResponse:
             "duration": time.time() - start_time,
             "api_version": 3,
         })
-        if api is not None:
-            await api.close()
 
     return json(parsed_data.to_dict())
 
@@ -212,4 +221,5 @@ def latest_download(request: Request) -> HTTPResponse:
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=9000, workers=1)
+    app.run(host="0.0.0.0", port=9000, workers=3)
+    asyncio.get_event_loop().close()
