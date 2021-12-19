@@ -4,6 +4,7 @@ import time
 
 import httpx
 import jwt
+from httpx import ConnectTimeout
 from sanic import Sanic, response
 from sanic.log import logger
 from sanic.request import Request
@@ -63,8 +64,16 @@ async def old_api(request: Request) -> HTTPResponse:
         )
         parsed_data.additional.avatar = avatar or ''
     except asyncio.CancelledError:
-        print(f"Request Cancelled")
         raise
+    except ConnectTimeout:
+        log({'error': "TIMED_OUT"})
+        return json({
+            "err": "200",
+            "description": "Timed out when connecting to your school's PowerSchool server. Please retry later.",
+            "alert": "Timed out when connecting to your school's PowerSchool server. Please retry later.",
+            "reserved": "Something went wrong! Timed out when connecting to your school's PowerSchool server. "
+                        "Please retry later.",
+        })
     except AuthException as e:
         description = e.args[0]['description']
         resp = {
@@ -126,13 +135,18 @@ async def get_data(request: Request) -> HTTPResponse:
         parsed_data.extra_info.jwt = jwt.encode({"username": username}, SECRET, algorithm="HS256").decode()
     except asyncio.CancelledError:
         raise
+    except ConnectTimeout:
+        log({'error': "TIMED_OUT"})
+        return json({
+            "success": False,
+            "title": "Connection Timed out",
+            "description": "Timed out when connecting to your school's PowerSchool server. Please retry later."
+        })
     except AuthException as e:
         return json({"success": False, **e.args[0]})
     except Exception as e:
         logger.exception(e)
-        log({
-            'error': repr(e)
-        })
+        log({'error': repr(e)})
         return json({"success": False, "title": "Unexpected Internal Error", "description": repr(e)})
     finally:
         log({
