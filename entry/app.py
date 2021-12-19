@@ -71,8 +71,6 @@ async def old_api(request: Request) -> HTTPResponse:
             "err": "200",
             "description": "Timed out when connecting to your school's PowerSchool server. Please retry later.",
             "alert": "Timed out when connecting to your school's PowerSchool server. Please retry later.",
-            "reserved": "Something went wrong! Timed out when connecting to your school's PowerSchool server. "
-                        "Please retry later.",
         })
     except AuthException as e:
         description = e.args[0]['description']
