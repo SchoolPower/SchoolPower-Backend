@@ -7,7 +7,7 @@ from zeep.cache import SqliteCache
 from zeep.proxy import AsyncServiceProxy
 from zeep.transports import AsyncTransport
 
-from config.config import PS_API
+from config.config import PS_API, TIME_OUT
 
 
 class AuthException(Exception):
@@ -23,8 +23,8 @@ class PowerSchoolApi:
         settings.force_https = False  # we are not using those http endpoints anyways
         auth = httpx.DigestAuth(auth_user, auth_password)
         self._transport = AsyncTransport(
-            client=httpx.AsyncClient(auth=auth),
-            wsdl_client=httpx.Client(auth=auth),
+            client=httpx.AsyncClient(auth=auth, timeout=TIME_OUT),
+            wsdl_client=httpx.Client(auth=auth, timeout=TIME_OUT),
             cache=SqliteCache(path=cache_location),
         )
         self._client = AsyncClient(

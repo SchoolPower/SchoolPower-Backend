@@ -56,8 +56,9 @@ async def old_api(request: Request) -> HTTPResponse:
                     content_type="application/json")
 
     start_time = time.time()
-    api = PowerSchoolApi(PS_API, CACHE_DB_LOCATION)
+    api = None
     try:
+        api = PowerSchoolApi(PS_API, CACHE_DB_LOCATION)
         parsed_data, avatar = await asyncio.gather(
             get_student_data(api, username, password, parser_old.parse_old_api),
             db.get_user_avatar(username)
@@ -101,7 +102,8 @@ async def old_api(request: Request) -> HTTPResponse:
             "duration": time.time() - start_time,
             "api_version": 2,
         })
-        await api.close()
+        if api is not None:
+            await api.close()
 
     return json(parsed_data.to_dict(include_default_values=True))
 
@@ -123,8 +125,9 @@ async def get_data(request: Request) -> HTTPResponse:
         return json(augmented.to_dict())
 
     start_time = time.time()
-    api = PowerSchoolApi(PS_API, CACHE_DB_LOCATION)
+    api = None
     try:
+        api = PowerSchoolApi(PS_API, CACHE_DB_LOCATION)
         parsed_data, avatar = await asyncio.gather(
             get_student_data(api, username, password, parser.parse),
             db.get_user_avatar(username)
@@ -157,7 +160,8 @@ async def get_data(request: Request) -> HTTPResponse:
             "duration": time.time() - start_time,
             "api_version": 3,
         })
-        await api.close()
+        if api is not None:
+            await api.close()
 
     return json(parsed_data.to_dict())
 
