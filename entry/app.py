@@ -1,6 +1,8 @@
 import asyncio
+import gettext
 import random
 import time
+from typing import Callable
 
 import httpx
 import jwt
@@ -22,6 +24,12 @@ app = Sanic("SchoolPower")
 compress = Compress()
 db_inited = False
 powerschool_api = None
+
+
+def use_translation(locale: str) -> Callable[[str], str]:
+    languages = ["en"] if locale is None else [locale, "en"]
+    translation = gettext.translation("base", localedir="../locales", languages=languages)
+    return translation.gettext
 
 
 async def get_student_data(api: PowerSchoolApi, username: str, password: str, parse_func):
@@ -49,6 +57,7 @@ async def get_powerschool_api():
         powerschool_api = await asyncio.get_event_loop().run_in_executor(
             None, PowerSchoolApi, PS_API, CACHE_DB_LOCATION
         )
+        return powerschool_api
     except ConnectTimeout:
         print("Failed to establish connection to PowerSchool Api")
         raise
@@ -127,6 +136,8 @@ async def get_data(request: Request) -> HTTPResponse:
     username = request.json['username']
     password = request.json['password']
 
+    localize = use_translation(request.headers.get("X-Locale"))
+
     if username == 'test':
         mock = httpx.get('https://schoolpower.oss-cn-shanghai.aliyuncs.com/test/mock_data.json').text
         return text(mock.replace('%random%', str(random.randint(0, 1))), content_type="application/json")
@@ -148,18 +159,18 @@ async def get_data(request: Request) -> HTTPResponse:
     except asyncio.CancelledError:
         raise
     except ConnectTimeout:
-        log({'error': "TIMED_OUT"})
+        log({"error": "TIMED_OUT"})
         return json({
             "success": False,
-            "title": "Connection Timed out",
-            "description": "Timed out when connecting to your school's PowerSchool server. Please retry later."
+            "title": localize("Error.ConnectionTimedOut.Title"),
+            "description": localize("Error.ConnectionTimedOut.Message")
         })
     except AuthException as e:
         return json({"success": False, **e.args[0]})
     except Exception as e:
         logger.exception(e)
         log({'error': repr(e)})
-        return json({"success": False, "title": "Unexpected Internal Error", "description": repr(e)})
+        return json({"success": False, "title": localize("Error.Unexpected.Title"), "description": repr(e)})
     finally:
         log({
             "username": username,

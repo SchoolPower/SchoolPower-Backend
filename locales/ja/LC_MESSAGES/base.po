@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "Error.ConnectionTimedOut.Title"
+msgstr "接続がタイムアウトしました"
+
+msgid "Error.ConnectionTimedOut.Message"
+msgstr "学校のPowerSchoolサーバーに接続しているときにタイムアウトになりました。 後で再試行してください。"
+
+msgid "Error.Unexpected.Title"
+msgstr "サーバー内の不明なエラー"
