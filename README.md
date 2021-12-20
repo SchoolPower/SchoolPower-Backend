@@ -22,6 +22,20 @@ It provides a set of backward-compatible API interface for v1 apps and another s
 are under development. Interfaces are defined
 with [protobufs](https://github.com/SchoolPower/schoolpower-backend/tree/main/protos).
 
+## Localization
+
+Localization (of user-facing messages) is achieved using the python3 
+[`gettext`](https://docs.python.org/3/library/gettext.html) standard library.
+Resources are located in `locales/`. 
+
+To add a translation:
+1. Add an entry to the `base.po` file for each locale (e.g. `locales/en/LC_MESSAGES/base.po`) 
+([GNU .po file format](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html)). We excluded the
+line number comment and some headers for simplicity.
+2. Run `locales/generate_binary.sh` to generate the
+[GNU .mo files](https://www.gnu.org/software/gettext/manual/html_node/MO-Files.html)
+for `getext` to use.
+
 License
 -------
 
