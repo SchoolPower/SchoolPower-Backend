@@ -28,7 +28,7 @@ powerschool_api = None
 
 def use_translation(locale: str) -> Callable[[str], str]:
     languages = ["en"] if locale is None else [locale, "en"]
-    translation = gettext.translation("base", localedir="../locales", languages=languages)
+    translation = gettext.translation("base", localedir="locales", languages=languages)
     return translation.gettext
 
 
