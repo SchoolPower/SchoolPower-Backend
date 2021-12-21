@@ -1,8 +1,7 @@
 import asyncio
-import gettext
 import random
 import time
-from typing import Callable
+from localization.localize import use_localize
 
 import httpx
 import jwt
@@ -24,12 +23,6 @@ app = Sanic("SchoolPower")
 compress = Compress()
 db_inited = False
 powerschool_api = None
-
-
-def use_translation(locale: str) -> Callable[[str], str]:
-    languages = ["en"] if locale is None else [locale, "en"]
-    translation = gettext.translation("base", localedir="locales", languages=languages)
-    return translation.gettext
 
 
 async def get_student_data(api: PowerSchoolApi, username: str, password: str, parse_func):
@@ -136,7 +129,7 @@ async def get_data(request: Request) -> HTTPResponse:
     username = request.json['username']
     password = request.json['password']
 
-    localize = use_translation(request.headers.get("X-Locale"))
+    localize = use_localize(request.headers.get("X-Locale"))
 
     if username == 'test':
         mock = httpx.get('https://schoolpower.oss-cn-shanghai.aliyuncs.com/test/mock_data.json').text

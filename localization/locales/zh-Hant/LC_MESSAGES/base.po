@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "Error.ConnectionTimedOut.Title"
+msgstr "連接超時"
+
+msgid "Error.ConnectionTimedOut.Message"
+msgstr "連接到您學校的 PowerSchool 服務器時超時。請稍後重試。"
+
+msgid "Error.Unexpected.Title"
+msgstr "服務器內部未知錯誤"
