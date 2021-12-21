@@ -1,7 +1,6 @@
 import asyncio
 import random
 import time
-from localization.localize import use_localize
 
 import httpx
 import jwt
@@ -17,6 +16,7 @@ from config.config import CACHE_DB_LOCATION, PS_API, SECRET
 from db import db
 from powerschool import parser, parser_old
 from powerschool.api import PowerSchoolApi, AuthException
+from localization.localize import use_localize
 
 app = Sanic("SchoolPower")
 
