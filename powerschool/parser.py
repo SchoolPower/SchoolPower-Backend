@@ -1,6 +1,6 @@
-import json
-from typing import Any
 import datetime
+import json
+from typing import Any, Optional
 
 from .model import *
 
@@ -13,6 +13,13 @@ def _term_order(term_title: str) -> int:
     index = int(term_title[1])
     letter_value = (LETTERS.index(term_title[0]) + 1) if term_title[0] in LETTERS else len(LETTERS) + 1
     return letter_value - index * 10
+
+
+def _try_parse_float(num: str) -> Optional[float]:
+    try:
+        return float(num)
+    except:
+        return None
 
 
 def parse(student_data: Any) -> StudentData:
@@ -35,8 +42,8 @@ def parse(student_data: Any) -> StudentData:
             return Grade()
         score = scores[id]
         return Grade(
-            percentage=float(score.percent) if id in scores and score.percent else None,
-            letter=score.letterGrade if id in scores else None
+            percentage=_try_parse_float(score.percent),
+            letter=score.letterGrade
         )
 
     def get_mark_for_display(assignment):
@@ -47,7 +54,7 @@ def parse(student_data: Any) -> StudentData:
 
     parse_result = StudentData(
         profile=Profile(
-            gpa=float(student_data.student.currentGPA) if student_data.student.currentGPA else None,
+            gpa=_try_parse_float(student_data.student.currentGPA),
             id=student_data.student.id,
             gender=ProfileGender.MALE if student_data.student.gender == 'M' else ProfileGender.FEMALE,
             dob=int(student_data.student.dob.timestamp() * 1000),
