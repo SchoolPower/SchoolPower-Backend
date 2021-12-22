@@ -47,7 +47,7 @@ def parse(student_data: Any) -> StudentData:
         )
 
     def get_mark_for_display(assignment):
-        mark = "{:.1f}".format(float(scores[assignment.id].score)) if assignment.id in scores and scores[
+        mark = "{:.1f}".format(_try_parse_float(scores[assignment.id].score)) if assignment.id in scores and scores[
             assignment.id].score else '--'
         full_mark = "{:.1f}".format(assignment.pointspossible)
         return f"{mark}/{full_mark}"
