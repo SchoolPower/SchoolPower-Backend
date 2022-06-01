@@ -1,4 +1,4 @@
-httpx==0.15.4
+httpx==0.23.0
 pypika==0.37.1
 tortoise-orm<0.16
 zeep
