@@ -22,6 +22,12 @@ It provides a set of backward-compatible API interface for v1 apps and another s
 are under development. Interfaces are defined
 with [protobufs](https://github.com/SchoolPower/schoolpower-backend/tree/main/protos).
 
+## Deploy
+* Upload the code
+* `pip install --upgrade pip`
+* `chmod +x deploy.sh && ./deploy.sh`
+* Deploy the code
+
 ## Localization
 
 Localization (of user-facing messages) is achieved using the python3 
