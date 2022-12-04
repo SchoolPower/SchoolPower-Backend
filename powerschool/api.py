@@ -32,12 +32,11 @@ class PowerSchoolApi:
             transport=self._transport,
             settings=settings,
         )
-
         # a workaround due to async client not supporting create_service
         self.service = AsyncServiceProxy(
             self._client,
             self._client.wsdl.bindings[
-                '{http://publicportal.rest.powerschool.pearson.com}PublicPortalServiceJSONSoap11Binding'],
+                '{http://publicportal.rest.powerschool.pearson.com/}PublicPortalServiceJSONSoap11Binding'],
             address=f'{url}/pearson-rest/services/PublicPortalServiceJSON')
 
     async def login(self, username: str, password: str):
