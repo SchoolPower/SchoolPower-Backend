@@ -7,3 +7,5 @@ apns2
 sanic>=21.12,<21.13
 sanic-gzip
 pyjwt
+websockets==10.0
+urllib3==1.26.19
